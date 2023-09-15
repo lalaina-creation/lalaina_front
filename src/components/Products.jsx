@@ -1,9 +1,17 @@
 import React from 'react';
+import Logo from '../assets/images/logo.png';
+import Image from 'next/image';
+import Navbar from './layouts/Navbar';
+import Banner from './Banner';
+import Novelty from './Novelty';
 
 const Products = () => {
     return (
         <div>
-            <h1 className='text-primary'>Products</h1>
+            <Navbar />
+            <Banner />
+            <Novelty />
+            
         </div>
     );
 }
