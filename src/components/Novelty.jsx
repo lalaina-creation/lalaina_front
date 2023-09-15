@@ -6,7 +6,7 @@ const Novelty = () => {
     return (
         <div className='w-1/2 mx-auto mt-4'>
 
-            <div className='flex justify-between' href="#Pyjamas">
+            <div className='flex justify-between items-end' href="#Pyjamas">
                 <h1 className='text-2xl font-semibold'>Pyjamas</h1>
                 <div className='flex gap-2'>
                     <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' />
@@ -23,7 +23,7 @@ const Novelty = () => {
             </div>
 
 
-            <div className='flex justify-between' href='#Femmes'>
+            <div className='flex justify-between mt-10' href='#Femmes'>
                 <h1 className='text-2xl font-semibold'>Femmes</h1>
                 <div className='flex gap-2'>
                     <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' />

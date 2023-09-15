@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Navbar from './layouts/Navbar';
 import Banner from './Banner';
 import Novelty from './Novelty';
+import Footer from './layouts/Footer';
 
 const Products = () => {
     return (
@@ -11,7 +12,7 @@ const Products = () => {
             <Navbar />
             <Banner />
             <Novelty />
-            
+            <Footer />
         </div>
     );
 }
