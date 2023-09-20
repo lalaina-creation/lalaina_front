@@ -1,8 +1,27 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import { FaArrowCircleLeft, FaArrowCircleRight, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import productsAPI from '@/API/products.api';
 
 const Novelty = () => {
+
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        fetchproducts();
+        console.log(products)
+    }, []);
+
+    const fetchproducts = async () => {
+        try {
+            const res = await productsAPI.getProducts();
+            console.log('res', res)
+            setProducts(res);
+        } catch (err) {
+            console.log(err);
+        }
+    };
     return (
         <div className='w-1/2 mx-auto mt-4'>
 
@@ -17,8 +36,8 @@ const Novelty = () => {
 
             <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-center mt-2'>
                 {/* Card */}
-                {[1, 2, 3, 4].map((item, index) => (
-                        <ProductCard key={index} />
+                {products?.map((product, index) => (
+                        <ProductCard key={index} product={product} />
                 ))}
             </div>
 
@@ -35,7 +54,7 @@ const Novelty = () => {
             <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-center mt-2'>
                 {/* Card */}
                 {[1, 2, 3, 4].map((item, index) => (
-                        <ProductCard key={index} />
+                        <ProductCard key={index} /> 
                 ))}
             </div>
         </div>
