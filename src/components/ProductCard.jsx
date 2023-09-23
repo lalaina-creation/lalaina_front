@@ -1,13 +1,24 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 const ProductCard = ({product}) => {
 
+    // const router = useRouter();
+    
     useEffect(() => {
         console.log(product);
     }, [product]);
+
+    const infosProduct = () => {
+        // router.push(`/products/${product.id}`);
+    }
+
+    
+
+
     return (
-        <div className='flex flex-col rounded-xl hover:scale-110 transition-all cursor-pointer'>
+        <div className='flex flex-col rounded-xl hover:scale-110 transition-all cursor-pointer' onClick={infosProduct}>
             <img src={product?.image? `${process.env.API_URL}/${product.image}` : 'https://lookhomme.com/wp-content/uploads/2019/08/Pull-cachemire-homme.jpg'} alt='product' className='w-full h-full rounded-t-xl' />
 
             <div className='flex flex-col text-center bg-gray-200 p-2'>

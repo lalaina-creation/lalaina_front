@@ -7,6 +7,8 @@ import productsAPI from '@/API/products.api';
 const Novelty = () => {
 
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [number, setNumber] = useState(0);
 
     useEffect(() => {
         fetchproducts();
@@ -22,21 +24,34 @@ const Novelty = () => {
             console.log(err);
         }
     };
+
+    const handleNext = () => {
+        if (number < products.length - 1) {
+            setNumber(number + 1);
+        }
+    };
+
+    const handlePrev = () => {
+        if (number > 0) {
+            setNumber(number - 1);
+        }
+    }
+
     return (
         <div className='w-1/2 mx-auto mt-4'>
 
             <div className='flex justify-between items-end' href="#Pyjamas">
                 <h1 className='text-2xl font-semibold'>Pyjamas</h1>
                 <div className='flex gap-2'>
-                    <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' />
-                    <FaArrowRight size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70'/>
+                    <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handlePrev}/>
+                    <FaArrowRight size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handleNext}/>
                 </div>
 
             </div>
 
             <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-center mt-2'>
                 {/* Card */}
-                {products?.map((product, index) => (
+                {products?.slice(number, number+4).map((product, index) => (
                         <ProductCard key={index} product={product} />
                 ))}
             </div>

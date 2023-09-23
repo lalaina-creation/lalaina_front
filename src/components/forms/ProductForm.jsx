@@ -47,7 +47,16 @@ const ProductForm = () => {
         
         productsAPI.addProduct(form)
         .then(res => {
-            console.log(res);
+            if(res.status === 201) {
+                setProduct({
+                    title: '',
+                    description: '',
+                    price: 0,
+                    image: '',
+                    category: categories[0],
+                    // size: 0
+                });
+            }
         })
         .catch(err => {
             console.log(err);
@@ -66,7 +75,6 @@ const ProductForm = () => {
                         alt='product' 
                         className='w-full h-full rounded-md object-contain cursor-pointer' 
                         onClick={importImage} />
-                        <input type='file' name='image' id='image' onChange={importImage} />
                         
                     </div>
                         
