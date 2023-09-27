@@ -1,0 +1,10 @@
+<VirtualHost *:80>
+        DocumentRoot /var/www/sites/lalaina_creation/lalaina_front
+        ServerName lalaina_creation.thomas-jan.fr
+        ServerAlias *.lalaina_creation.thomas-jan.fr
+        <Directory /var/www/sites/lalaina_creation/lalaina_front>
+                Options -Indexes +FollowSymLinks
+                AllowOverride All
+                Require all granted
+        </Directory>
+</VirtualHost>
