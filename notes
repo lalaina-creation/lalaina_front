@@ -8,3 +8,16 @@
                 Require all granted
         </Directory>
 </VirtualHost>
+
+
+sudo tail -f /var/log/apache2/error.log
+[Wed Sep 27 00:00:03.079769 2023] [mpm_prefork:notice] [pid 1055] AH00163: Apache/2.4.52 (Ubuntu) configured -- resuming normal operations
+[Wed Sep 27 00:00:03.079802 2023] [core:notice] [pid 1055] AH00094: Command line: '/usr/sbin/apache2'
+[Wed Sep 27 08:01:02.830681 2023] [mpm_prefork:notice] [pid 1055] AH00170: caught SIGWINCH, shutting down gracefully
+[Wed Sep 27 08:01:04.043626 2023] [mpm_prefork:notice] [pid 789086] AH00163: Apache/2.4.52 (Ubuntu) configured -- resuming normal operations
+[Wed Sep 27 08:01:04.043722 2023] [core:notice] [pid 789086] AH00094: Command line: '/usr/sbin/apache2'
+[Wed Sep 27 08:23:21.267199 2023] [mpm_prefork:notice] [pid 789086] AH00171: Graceful restart requested, doing restart
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive globally to suppress this message
+[Wed Sep 27 08:23:21.649700 2023] [mpm_prefork:notice] [pid 789086] AH00163: Apache/2.4.52 (Ubuntu) configured -- resuming normal operations
+[Wed Sep 27 08:23:21.649720 2023] [core:notice] [pid 789086] AH00094: Command line: '/usr/sbin/apache2'
+[Wed Sep 27 08:34:31.774502 2023] [mpm_prefork:notice] [pid 789086] AH00170: caught SIGWINCH, shutting down gracefully
