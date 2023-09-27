@@ -10,6 +10,18 @@
 </VirtualHost>
 
 
+<VirtualHost *:80>
+        DocumentRoot /var/www/sites/portfolio-threeJs/dist
+        ServerName portfolio.thomas-jan.fr
+        ServerAlias *.portfolio.thomas-jan.fr
+        <Directory /var/www/sites/portfolio-threeJs/dist>
+                AllowOverride All
+                Require all granted
+        </Directory>
+</VirtualHost>
+
+
+
 sudo lsof -i :80
 COMMAND     PID USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
 httpd   1165245 root    4u  IPv6 9177636      0t0  TCP *:http (LISTEN)
