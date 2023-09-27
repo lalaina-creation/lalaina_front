@@ -21,3 +21,21 @@ AH00558: apache2: Could not reliably determine the server's fully qualified doma
 [Wed Sep 27 08:23:21.649700 2023] [mpm_prefork:notice] [pid 789086] AH00163: Apache/2.4.52 (Ubuntu) configured -- resuming normal operations
 [Wed Sep 27 08:23:21.649720 2023] [core:notice] [pid 789086] AH00094: Command line: '/usr/sbin/apache2'
 [Wed Sep 27 08:34:31.774502 2023] [mpm_prefork:notice] [pid 789086] AH00170: caught SIGWINCH, shutting down gracefully
+
+apache2.service - The Apache HTTP Server
+     Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+     Active: failed (Result: exit-code) since Wed 2023-09-27 09:17:15 CEST; 54s ago
+       Docs: https://httpd.apache.org/docs/2.4/
+    Process: 1311241 ExecStart=/usr/sbin/apachectl start (code=exited, status=1/FAILURE)
+        CPU: 44ms
+
+sept. 27 09:17:15 janko-virtual-machine apachectl[1311244]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive global>
+sept. 27 09:17:15 janko-virtual-machine apachectl[1311244]: (98)Address already in use: AH00072: make_sock: could not bind to address [::]:80
+sept. 27 09:17:15 janko-virtual-machine apachectl[1311244]: (98)Address already in use: AH00072: make_sock: could not bind to address 0.0.0.0:80
+sept. 27 09:17:15 janko-virtual-machine apachectl[1311244]: no listening sockets available, shutting down
+sept. 27 09:17:15 janko-virtual-machine apachectl[1311244]: AH00015: Unable to open logs
+sept. 27 09:17:15 janko-virtual-machine apachectl[1311241]: Action 'start' failed.
+sept. 27 09:17:15 janko-virtual-machine apachectl[1311241]: The Apache error log may have more information.
+sept. 27 09:17:15 janko-virtual-machine systemd[1]: apache2.service: Control process exited, code=exited, status=1/FAILURE
+sept. 27 09:17:15 janko-virtual-machine systemd[1]: apache2.service: Failed with result 'exit-code'.
+sept. 27 09:17:15 janko-virtual-machine systemd[1]: Failed to start The Apache HTTP Server.
