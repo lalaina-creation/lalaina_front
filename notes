@@ -10,4 +10,6 @@
 </VirtualHost>
 
 
+[Wed Sep 27 11:16:02.914312 2023] [autoindex:error] [pid 275867] [client 77.111.247.109:46403] AH01276: Cannot serve directory /var/www/sites/lalaina_creation/lalaina_front/.next/: No matching DirectoryIndex (index.html,index.cgi,index.pl,index.php,index.xhtml,index.htm) found, and server-generated directory index forbidden by Options directive
+
 
