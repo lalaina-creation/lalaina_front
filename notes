@@ -1,7 +1,7 @@
 <VirtualHost *:80>
         DocumentRoot /var/www/sites/lalaina_creation/lalaina_front
-        ServerName lalaina_creation.thomas-jan.fr
-        ServerAlias *.lalaina_creation.thomas-jan.fr
+        ServerName lalaina-creation.thomas-jan.fr
+        ServerAlias *.lalaina-creation.thomas-jan.fr
         <Directory /var/www/sites/lalaina_creation/lalaina_front>
                 Options -Indexes +FollowSymLinks
                 AllowOverride All
@@ -10,22 +10,4 @@
 </VirtualHost>
 
 
-<VirtualHost *:80>
-        DocumentRoot /var/www/sites/portfolio-threeJs/dist
-        ServerName portfolio.thomas-jan.fr
-        ServerAlias *.portfolio.thomas-jan.fr
-        <Directory /var/www/sites/portfolio-threeJs/dist>
-                AllowOverride All
-                Require all granted
-        </Directory>
-</VirtualHost>
 
-
-
-sudo lsof -i :80
-COMMAND     PID USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
-httpd   1165245 root    4u  IPv6 9177636      0t0  TCP *:http (LISTEN)
-httpd   1165246 root    4u  IPv6 9177636      0t0  TCP *:http (LISTEN)
-httpd   1165247 root    4u  IPv6 9177636      0t0  TCP *:http (LISTEN)
-httpd   1165248 root    4u  IPv6 9177636      0t0  TCP *:http (LISTEN)
-httpd   1208013 root    4u  IPv6 9177636      0t0  TCP *:http (LISTEN)
