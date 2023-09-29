@@ -1,14 +1,19 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ProductCard from './ProductCard';
 import { FaArrowCircleLeft, FaArrowCircleRight, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import productsAPI from '@/API/products.api';
+import ProductInfos from './ProductInfos';
 
 const Novelty = () => {
 
+    const modal = useRef(null);
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [number, setNumber] = useState(0);
+
+    const [selectedProduct, setSelectedProduct] = useState({});
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         fetchproducts();
@@ -37,41 +42,92 @@ const Novelty = () => {
         }
     }
 
+    const infosProduct = (product) => {
+        setSelectedProduct(product);
+        setShowModal(true);
+        console.log(product)
+    }
+
+    const handleOutsideClick = (e) => {
+        if (e.target.classList.contains('dialog')) {
+            setShowModal(false);
+        }
+    };
+
+    
+
     return (
-        <div className='w-1/2 mx-auto mt-4'>
+        <div className='w-[70%] mx-auto mt-10 flex flex-col gap-10'>
 
-            <div className='flex justify-between items-end' href="#Pyjamas">
-                <h1 className='text-2xl font-semibold'>Pyjamas</h1>
-                <div className='flex gap-2'>
-                    <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handlePrev}/>
-                    <FaArrowRight size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handleNext}/>
+            {/* FEMMES  */}
+            <div>
+                <div className='flex justify-between items-end' href="#Pyjamas">
+                    <h1 className='text-2xl font-semibold'>Femmes</h1>
+                    <div className='flex gap-2'>
+                        <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handlePrev}/>
+                        <FaArrowRight size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handleNext}/>
+                    </div>
+
                 </div>
 
+                <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-items-center justify-center mt-2'>
+                    {/* Card */}
+                    {products?.filter(p => p.category == "Femme").map((product, index) => (
+                            <ProductCard key={index} product={product} infosProduct={infosProduct}  />
+                    ))}
+                </div>
             </div>
+            <div className='border-b border-primary' />
 
-            <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-center mt-2'>
-                {/* Card */}
-                {products?.slice(number, number+4).map((product, index) => (
-                        <ProductCard key={index} product={product} />
-                ))}
-            </div>
+            {/* HOMMES  */}
+            <div>
+                <div className='flex justify-between items-end' href="#Pyjamas">
+                    <h1 className='text-2xl font-semibold'>Hommes</h1>
+                    <div className='flex gap-2'>
+                        <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handlePrev}/>
+                        <FaArrowRight size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handleNext}/>
+                    </div>
 
-
-            <div className='flex justify-between mt-10' href='#Femmes'>
-                <h1 className='text-2xl font-semibold'>Femmes</h1>
-                <div className='flex gap-2'>
-                    <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' />
-                    <FaArrowRight size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70'/>
                 </div>
 
+                <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-items-center justify-center mt-2'>
+                    {/* Card */}
+                    {products?.filter(p => p.category == "Homme").map((product, index) => (
+                            <ProductCard key={index} product={product} infosProduct={infosProduct}  />
+                    ))}
+                </div>
             </div>
 
-            <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-center mt-2'>
-                {/* Card */}
-                {[1, 2, 3, 4].map((item, index) => (
-                        <ProductCard key={index} /> 
-                ))}
+            <div className='border-b border-primary' />
+
+            {/* ENFANTS  */}
+            <div>
+                <div className='flex justify-between items-end' href="#Pyjamas">
+                    <h1 className='text-2xl font-semibold'>Enfants</h1>
+                    <div className='flex gap-2'>
+                        <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handlePrev}/>
+                        <FaArrowRight size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handleNext}/>
+                    </div>
+
+                </div>
+
+                <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-items-center justify-center mt-2'>
+                    {/* Card */}
+                    {products?.filter(p => p.category == "Enfant").map((product, index) => (
+                            <ProductCard key={index} product={product} infosProduct={infosProduct}  />
+                    ))}
+                </div>
             </div>
+
+
+           
+
+            {/* Modal */}
+            {showModal && (
+             <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center dialog' onClick={handleOutsideClick}  >
+                <ProductInfos product={selectedProduct} setShowModal={setShowModal} />
+            </div>
+            )}
         </div>
     );
 }

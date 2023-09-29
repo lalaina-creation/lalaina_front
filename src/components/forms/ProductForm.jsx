@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 
 const ProductForm = () => {
     
-    const categories = ['Cachemire', 'Pyjamas', 'Robes'];
+    const categories = ['Homme', 'Femme', 'Enfant'];
+    const types = ['Cachemire', 'Pyjamas', 'Robes'];
 
     const [product, setProduct] = useState({
         title: '',
@@ -12,6 +13,7 @@ const ProductForm = () => {
         price: 0,
         image: '',
         category: categories[0],
+        type: types[0]
         // size: 0
     });
 
@@ -44,6 +46,7 @@ const ProductForm = () => {
         form.append('price', product.price);
         form.append('image', product.image); // Use 'file' as the field name for the image
         form.append('category', product.category);
+        form.append('type', product.type);
         
         productsAPI.addProduct(form)
         .then(res => {
@@ -54,6 +57,7 @@ const ProductForm = () => {
                     price: 0,
                     image: '',
                     category: categories[0],
+                    type: types[0]
                     // size: 0
                 });
             }
@@ -104,6 +108,15 @@ const ProductForm = () => {
                             style={{width: `${product.price.toString().length * 20}px`, minWidth: '30px'}} 
                             value={product.price} 
                             onChange={handleChange} /> €
+                        </div>
+
+                        <div className='flex flex-col'>
+                            <label htmlFor='type'>Type</label>
+                            <select name='type' id='type' onChange={handleChange}>
+                               {types.map((type, index) => (
+                                     <option key={index} value={type}>{type}</option>
+                               ))}
+                            </select>
                         </div>
 
                         <div className='flex flex-col'>
