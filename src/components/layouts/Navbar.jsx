@@ -46,7 +46,7 @@ const Navbar = () => {
         </div>
       </div>
       {menuOpen && (
-        <div className="lg:hidden fixed inset-0 flex flex-col justify-center items-center bg-gray-200 p-4 ">
+        <div className="lg:hidden fixed inset-0 flex flex-col justify-center items-center bg-gray-200 p-4 z-50">
             <span className='text-3xl font-semibold text-primary absolute top-20 right-20 cursor-pointer' onClick={toggleMenu} > X </span>
           <div className='text-center w-full flex flex-col justify-center'>
             <span className="text-lg font-semibold mb-2 flex justify-center">
