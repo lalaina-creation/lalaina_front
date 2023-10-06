@@ -15,6 +15,8 @@ const Novelty = () => {
     const [selectedProduct, setSelectedProduct] = useState({});
     const [showModal, setShowModal] = useState(false);
 
+    const listGenders = ['Femmes', 'Hommes', 'Garçons', 'Filles'];
+
     useEffect(() => {
         fetchproducts();
         console.log(products)
@@ -60,9 +62,12 @@ const Novelty = () => {
         <div className='w-[70%] mx-auto mt-10 flex flex-col gap-10'>
 
             {/* FEMMES  */}
+            
+            {listGenders?.map((list) => (
+            <>
             <div>
-                <div className='flex justify-between items-end' href="#Pyjamas">
-                    <h1 className='text-2xl font-semibold'>Femmes</h1>
+                <div className='flex justify-between items-end' href="#Femmes">
+                    <h1 className='text-2xl font-semibold'>{list}</h1>
                     <div className='flex gap-2'>
                         <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handlePrev}/>
                         <FaArrowRight size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handleNext}/>
@@ -70,57 +75,18 @@ const Novelty = () => {
 
                 </div>
 
-                <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-items-center justify-center mt-2'>
+                <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-items-center justify-center mt-6'>
                     {/* Card */}
-                    {products?.filter(p => p.category == "Femme").map((product, index) => (
-                            <ProductCard key={index} product={product} infosProduct={infosProduct}  />
-                    ))}
-                </div>
-            </div>
-            <div className='border-b border-primary' />
-
-            {/* HOMMES  */}
-            <div>
-                <div className='flex justify-between items-end' href="#Pyjamas">
-                    <h1 className='text-2xl font-semibold'>Hommes</h1>
-                    <div className='flex gap-2'>
-                        <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handlePrev}/>
-                        <FaArrowRight size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handleNext}/>
-                    </div>
-
-                </div>
-
-                <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-items-center justify-center mt-2'>
-                    {/* Card */}
-                    {products?.filter(p => p.category == "Homme").map((product, index) => (
+                    {products?.filter(p => p.gender == list).map((product, index) => (
                             <ProductCard key={index} product={product} infosProduct={infosProduct}  />
                     ))}
                 </div>
             </div>
 
             <div className='border-b border-primary' />
+            </>
+            ))}
 
-            {/* ENFANTS  */}
-            <div>
-                <div className='flex justify-between items-end' href="#Pyjamas">
-                    <h1 className='text-2xl font-semibold'>Enfants</h1>
-                    <div className='flex gap-2'>
-                        <FaArrowLeft size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handlePrev}/>
-                        <FaArrowRight size={32} className='text-2xl border border-black rounded-md p-1 cursor-pointer hover:opacity-70' onClick={handleNext}/>
-                    </div>
-
-                </div>
-
-                <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-items-center justify-center mt-2'>
-                    {/* Card */}
-                    {products?.filter(p => p.category == "Enfant").map((product, index) => (
-                            <ProductCard key={index} product={product} infosProduct={infosProduct}  />
-                    ))}
-                </div>
-            </div>
-
-
-           
 
             {/* Modal */}
             {showModal && (

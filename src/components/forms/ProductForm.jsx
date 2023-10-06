@@ -1,21 +1,57 @@
 'use client'
 import productsAPI from '@/API/products.api';
-import React, { useState } from 'react';
+import categoriesAPI from '@/API/categories.api';
+import attributesAPi from '@/API/attributes.api';
+import React, { useEffect, useState } from 'react';
 
 const ProductForm = () => {
     
-    const categories = ['Homme', 'Femme', 'Enfant'];
-    const types = ['Cachemire', 'Pyjamas', 'Robes'];
+    const genderList = ['Hommes', 'Femmes', 'Garçons', 'Filles', 'Tous'];
+    const sizeList = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+
+    const [types, setTypes] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     const [product, setProduct] = useState({
         title: '',
         description: '',
         price: 0,
-        image: '',
-        category: categories[0],
-        type: types[0]
-        // size: 0
+        image_url: '',
+        category: '',
+        attributes: [],
+        gender: genderList[0],
+        sizes: [],
     });
+
+    useEffect(() => {
+        fetchCategories();
+        fetchTypes();
+    }, []);
+
+
+    const fetchCategories = () => {
+        categoriesAPI.getCategories()
+        .then(res => {
+            console.table(res);
+                setCategories(res);
+                setProduct({...product, category: res[0].category_name});
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
+    const fetchTypes = () => {
+        attributesAPi.getAttributes()
+        .then(res => {
+            console.table(res);
+                setTypes(res);
+                // setProduct({...product, attributes: res[0].attribute_name});
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
 
 
     const handleChange = (e) => {
@@ -30,12 +66,38 @@ const ProductForm = () => {
         input.onchange = (e) => {
           const file = e.target.files[0];
           if (file) {
-            setProduct({ ...product, image: file }); // Set the file object
+            setProduct({ ...product, image_url: file }); // Set the file object
           }
         };
       
         input.click();
       };
+
+
+      const handleSelectType = (e) => {
+        const type = e.target.value;
+        const index = product.attributes.indexOf(type);
+        if(index === -1) {
+            setProduct({...product, attributes: [...product.attributes, type]});
+        } else {
+            const newAttributes = product.attributes.filter(attribute => attribute !== type);
+            setProduct({...product, attributes: newAttributes});
+        }
+        console.log(product.attributes);
+    }
+
+    const handleSelectSizes = (e) => {
+        const size = e.target.textContent;
+        const index = product.sizes.indexOf(size);
+        if(index === -1) {
+            setProduct({...product, sizes: [...product.sizes, size]});
+        } else {
+            const newSizes = product.sizes.filter(s => s !== size);
+            setProduct({...product, sizes: newSizes});
+        }
+        console.log(product.sizes);
+    }
+
 
       const saveProduct = () => {
         console.log(product);
@@ -44,9 +106,11 @@ const ProductForm = () => {
         form.append('title', product.title);
         form.append('description', product.description);
         form.append('price', product.price);
-        form.append('image', product.image); // Use 'file' as the field name for the image
+        form.append('image', product.image_url); // Use 'file' as the field name for the image
         form.append('category', product.category);
-        form.append('type', product.type);
+        form.append('attributes', product.attributes);
+        form.append('gender', product.gender);
+        form.append('sizes', product.sizes);
         
         productsAPI.addProduct(form)
         .then(res => {
@@ -55,10 +119,11 @@ const ProductForm = () => {
                     title: '',
                     description: '',
                     price: 0,
-                    image: '',
-                    category: categories[0],
-                    type: types[0]
-                    // size: 0
+                    image_url: '',
+                    category: '',
+                    attributes: [],
+                    gender: genderList[0],
+                    sizes: [],
                 });
             }
         })
@@ -75,9 +140,9 @@ const ProductForm = () => {
                 <div className='mt-4 grid grid-cols-2 gap-4'>
                         {/* IMAGE  */}
                     <div className='flex justify-center'>
-                        <img src={product.image? URL.createObjectURL(product.image) : 'https://picsum.photos/200/300' } 
+                        <img src={product.image_url? URL.createObjectURL(product.image_url) : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkatl3eMWf4EbSUD4U3ToV_8dnyFRi0kv4QFHn0Ku-Js3P2kH9jHlFp77E7XfdY99yYdI&usqp=CAU' } 
                         alt='product' 
-                        className='w-full h-full rounded-md object-contain cursor-pointer' 
+                        className='w-full h-full rounded-md border  object-contain cursor-pointer' 
                         onClick={importImage} />
                         
                     </div>
@@ -111,21 +176,45 @@ const ProductForm = () => {
                         </div>
 
                         <div className='flex flex-col'>
-                            <label htmlFor='type'>Type</label>
-                            <select name='type' id='type' onChange={handleChange}>
-                               {types.map((type, index) => (
-                                     <option key={index} value={type}>{type}</option>
+                            <label htmlFor='category'>Categorie</label>
+                            <select name='category' id='category' onChange={handleChange}>
+                               {categories?.map((categorie, index) => (
+                                     <option key={index} value={categorie.category_name}>{categorie.category_name}</option>
                                ))}
                             </select>
                         </div>
 
                         <div className='flex flex-col'>
-                            <label htmlFor='category'>Catégorie</label>
-                            <select name='category' id='category' onChange={handleChange}>
-                               {categories.map((category, index) => (
-                                     <option key={index} value={category}>{category}</option>
+                            <label htmlFor='attributes'>Types</label>
+                            <select name='attributes' id='attributes' multiple className='h-52 rounded-md p-1'>
+                               {types?.map((type, index) => (
+                                     <option  
+                                     className={`${product.attributes.includes(type.attribute_name) && 'bg-primary rounded-md'} cursor-pointer mx-1 py-[1px] my-2 text-center font-bold border-b-2`}
+                                      key={index} value={type.attribute_name} 
+                                      onClick={handleSelectType}>
+                                        {type.attribute_name}
+                                      </option>
                                ))}
                             </select>
+                        </div>
+
+                        <div className='flex flex-col'>
+                            <label htmlFor='gender'>Genre</label>
+                            <select name='gender' id='gender' onChange={handleChange}>
+                               {genderList.map((gender, index) => (
+                                     <option key={index} value={gender}>{gender}</option>
+                               ))}
+                            </select>
+                        </div>
+
+                        <div className='flex justify-center gap-2'>
+                            {sizeList.map((size, index) => (
+                                <div 
+                                className={`rounded-full items-center flex justify-center p-1 cursor-pointer ${product.sizes.includes(size)? 'bg-secondary': 'bg-gray-200'}`}
+                                onClick={handleSelectSizes}>
+                                    {size} 
+                                </div>
+                            ))}
                         </div>
 
                     </div>

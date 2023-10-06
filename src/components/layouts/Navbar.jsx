@@ -25,15 +25,21 @@ const Navbar = () => {
         </div>
       </div>
       <div className="hidden lg:flex gap-5 text-lg font-semibold">
+        <a href="#Femmes">
         <span className="hover:border-b-primary border cursor-pointer">
           Femmes
         </span>
+        </a>
+        <a href="#Hommes">
         <span className="hover:border-b-primary border cursor-pointer">
           Hommes
         </span>
+        </a>
+        <a href="#Enfants">
         <span className="hover:border-b-primary border cursor-pointer">
           Enfants
         </span>
+        </a>
         <div className="ml-10 flex gap-4">
           <FaInstagram className="text-2xl text-primary" />
           <FaFacebook className="text-2xl text-primary" />

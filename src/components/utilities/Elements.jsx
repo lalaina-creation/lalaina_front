@@ -32,3 +32,36 @@ export const Tags = ({ tag }) => {
         </div>
     )
 }
+
+
+//size
+export const Size = ({ size }) => {
+
+  //couleur en fonction de la priorité  (1,2,3)
+  const getSizeBackgroundColor = (size) => {
+      switch (size) {
+        case 'XS':
+          return 'bg-gray-500';
+        case 'S':
+          return 'bg-blue-400';
+        case 'M':
+          return 'bg-green-400';
+        case 'L':
+          return 'bg-yellow-400';
+        case 'XL':
+          return 'bg-red-400';
+        case 'XXL':
+          return 'bg-purple-400';
+        default:
+          return 'bg-gray-400';
+      }
+    };
+
+
+    return (
+      <div className={`rounded-full font-semibold h-8 w-8 text-center align-middle items-center flex justify-center ${getSizeBackgroundColor(size)}`}>
+          {size}
+      </div>
+    )
+}
+
