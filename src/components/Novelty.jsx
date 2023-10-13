@@ -75,7 +75,7 @@ const Novelty = () => {
 
                 </div>
 
-                <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-items-center justify-center mt-6'>
+                <div className='grid gap-3 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-items-center justify-center mt-6 '>
                     {/* Card */}
                     {products?.filter(p => p.gender == list).map((product, index) => (
                             <ProductCard key={index} product={product} infosProduct={infosProduct}  />
