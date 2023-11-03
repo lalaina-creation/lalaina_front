@@ -40,6 +40,11 @@ const Navbar = () => {
           Enfants
         </span>
         </a>
+        <a href="#Accessoires">
+        <span className="hover:border-b-primary border cursor-pointer">
+          Accessoires
+        </span>
+        </a>
         <div className="ml-10 flex gap-4">
           <FaInstagram className="text-2xl text-primary" />
           <FaFacebook className="text-2xl text-primary" />
@@ -66,6 +71,9 @@ const Navbar = () => {
                     </span>
                     <span className="block text-2xl hover:text-primary cursor-pointer">
                     Enfants
+                    </span>
+                    <span className="block text-2xl hover:text-primary cursor-pointer">
+                    Accessoires
                     </span>
                 </div>
 
