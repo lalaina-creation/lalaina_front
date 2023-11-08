@@ -21,7 +21,7 @@ const productsAPI = {
           },
       };
         return axios.post(API_URL + '/addProduct', product, config)
-          .then(response => response)
+          .then(response =>  response)
           .catch(error => {
             console.log('Error: ', error);
           });

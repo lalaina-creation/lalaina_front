@@ -1,16 +1,32 @@
 'use client'
-import productsAPI from '@/API/products.api';
-import categoriesAPI from '@/API/categories.api';
-import attributesAPi from '@/API/attributes.api';
 import React, { useEffect, useState } from 'react';
+
+import colsListAPI from '@/API/colsList.api';
+import productsAPI from '@/API/products.api';
+import mattersListAPI from '@/API/mattersList.api';
+import productsListAPI from '@/API/productsList.api';
+
+import ListBox from '@/components/utilities/ListBox';
+
 
 const ProductForm = () => {
     
-    const genderList = ['Hommes', 'Femmes', 'Garçons', 'Filles', 'Tous'];
-    const sizeList = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+    const categoriesList = [
+        {id: 1, title: 'Hommes'},
+        {id: 2, title: 'Femmes'},
+        {id: 3, title: 'Enfants'},
+        {id: 4, title: 'Accessoires'} 
+    ];
+    const sizeList = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'TU'];
+    const threadsList = ['2 fils', '3 fils', '4 fils']
 
-    const [types, setTypes] = useState([]);
-    const [categories, setCategories] = useState([]);
+    
+    const [colsList, setColsList] = useState([]);
+    const [mattersList, setMattersList] = useState([]);
+    const [productsList, setProductsList] = useState([]);
+
+    const [loader, setLoader] = useState(false);
+    const [message, setMessage] = useState({type: '', content: ''});
 
     const [product, setProduct] = useState({
         title: '',
@@ -18,39 +34,49 @@ const ProductForm = () => {
         price: 0,
         image_url: '',
         category: '',
-        attributes: [],
-        gender: genderList[0],
-        sizes: [],
+        matter: '',
+        col: '',
+        threads: '',
+        size: '',
+        color: '',
+        stock_quantity: 1
     });
 
     useEffect(() => {
-        fetchCategories();
-        fetchTypes();
+        fetchColsList();
+        fetchMattersList();
+        fetchProductsList();
     }, []);
 
 
-    const fetchCategories = () => {
-        categoriesAPI.getCategories()
-        .then(res => {
-            console.table(res);
-                setCategories(res);
-                setProduct({...product, category: res[0].category_name});
-        })
+    const fetchColsList = () => {
+       colsListAPI.getColsList()
+         .then(res => {
+            setColsList(res);
+         })
         .catch(err => {
             console.log(err);
         })
     }
 
-    const fetchTypes = () => {
-        attributesAPi.getAttributes()
-        .then(res => {
-            console.table(res);
-                setTypes(res);
-                // setProduct({...product, attributes: res[0].attribute_name});
-        })
-        .catch(err => {
-            console.log(err);
-        })
+    const fetchMattersList = () => {
+        mattersListAPI.getMattersList()
+            .then(res => {
+                 setMattersList(res);
+            })
+             .catch(err => {
+                 console.log(err);
+             })
+    }
+
+    const fetchProductsList = () => {
+        productsListAPI.getProductsList()
+            .then(res => {
+                setProductsList(res);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
 
@@ -86,34 +112,27 @@ const ProductForm = () => {
         console.log(product.attributes);
     }
 
-    const handleSelectSizes = (e) => {
-        const size = e.target.textContent;
-        const index = product.sizes.indexOf(size);
-        if(index === -1) {
-            setProduct({...product, sizes: [...product.sizes, size]});
-        } else {
-            const newSizes = product.sizes.filter(s => s !== size);
-            setProduct({...product, sizes: newSizes});
-        }
-        console.log(product.sizes);
-    }
-
+  
 
       const saveProduct = () => {
-        console.log(product);
-        
+        setLoader(true);
         const form = new FormData();
+        
         form.append('title', product.title);
         form.append('description', product.description);
         form.append('price', product.price);
         form.append('image', product.image_url); // Use 'file' as the field name for the image
         form.append('category', product.category);
-        form.append('attributes', product.attributes);
-        form.append('gender', product.gender);
-        form.append('sizes', product.sizes);
+        form.append('matter', product.matter);
+        form.append('col', product.col);
+        form.append('threads', product.threads);
+        form.append('size', product.size);
+        form.append('color', product.color);
+        form.append('stock_quantity', product.stock_quantity);
         
         productsAPI.addProduct(form)
         .then(res => {
+            console.log('produit ajouté:' , res)
             if(res.status === 201) {
                 setProduct({
                     title: '',
@@ -121,52 +140,110 @@ const ProductForm = () => {
                     price: 0,
                     image_url: '',
                     category: '',
-                    attributes: [],
-                    gender: genderList[0],
-                    sizes: [],
+                    matter: '',
+                    col: '',
+                    threads: '',
+                    size: '',
+                    color: '',
+                    stock_quantity: 1
                 });
+                setLoader(false);
+                setMessage({type: 'success', content: 'Produit enregistré avec succès'});
             }
         })
         .catch(err => {
             console.log(err);
+            setLoader(false);
+            setMessage({type: 'error', content: 'Erreur lors de l\'enregistrement'});
         })
+    }
+
+    const handleSelectProduct = (e) => {
+        if(!e?.title) return;
+        setProduct({...product, title: e.title});
+    }
+    const handleSelectCategory = (e) => {
+        if(!e?.title) return;
+        setProduct({...product, category: e.title});
+    }
+    const handleSelectMatter = (e) => {
+        if(!e?.title) return;
+        setProduct({...product, matter: e.title});
+    }
+    const handleSelectCol = (e) => {
+        if(!e?.title) return;
+        setProduct({...product, col: e.title});
     }
 
 
     return (
         <div className='inset-0 fixed top-0 left-0 flex justify-center items-center lg:w-2/3 w-5/6 mx-auto '>
-            <div className='bg-primary rounded-md p-4 shadow-lg'>
+            <div className='bg-primary rounded-md p-4 shadow-lg max-h-screen overflow-auto'>
                 <h1 className='font-bold text-2xl text-center text-white underline'>Ajouter un article</h1>
                 <div className='mt-4 grid grid-cols-2 gap-4'>
                         {/* IMAGE  */}
                     <div className='flex justify-center'>
-                        <img src={product.image_url? URL.createObjectURL(product.image_url) : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkatl3eMWf4EbSUD4U3ToV_8dnyFRi0kv4QFHn0Ku-Js3P2kH9jHlFp77E7XfdY99yYdI&usqp=CAU' } 
+                        <img src={product.image_url? URL.createObjectURL(product.image_url) : 'https://st3.depositphotos.com/23594922/31822/v/1600/depositphotos_318221368-stock-illustration-missing-picture-page-for-website.jpg' } 
                         alt='product' 
                         className='w-full h-full rounded-md border  object-contain cursor-pointer' 
                         onClick={importImage} />
                         
                     </div>
-                        
+
                         {/* FORMULAIRE  */}
                     <div className='flex flex-col gap-4'>
-                        <div className='flex flex-col gap-1'>
-                            <label htmlFor='title' className='text-center'>Nom de l'article</label>
-                            <input type='text' name='title' id='title'
-                            className='rounded-md bg-white px-2 outline-none h-12'
-                            placeholder="Nom de l'article..." 
-                            value={product.title}
-                            onChange={handleChange} 
-                            />
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                            <label htmlFor='description'>Description</label>
-                            <textarea type='text' name='description' id='description' 
-                                placeholder="Description de l'article..."
-                                className='min-h-[60px] h-fit w-full px-2 rounded-md'
-                                value={product.description}
-                                onChange={handleChange}/>
+
+                        {/* Categorie  */}
+                        <div className='flex flex-col'>
+                            <label htmlFor='category' className='text-left font-semibold'>Categorie: </label>
+                            <ListBox list={categoriesList} handleSelect={handleSelectCategory} />
                         </div>
 
+                        {/* NAME  */}
+                        <div className='flex flex-col'>
+                            <label htmlFor='title' className='text-left font-semibold'>Type d'article: </label>
+                            <ListBox list={productsList} handleSelect={handleSelectProduct} />
+                        </div>
+
+                        {/* MATIERE  */}
+                        <div className='flex flex-col'>
+                            <label htmlFor='matter' className='text-left font-semibold'>Matière: </label>
+                            <ListBox list={mattersList} handleSelect={handleSelectMatter} />
+                        </div>
+
+                        {/* COL  */}
+                        <div className='flex flex-col'>
+                            <label htmlFor='col' className='text-left font-semibold'>Col: </label>
+                            <ListBox list={colsList} handleSelect={handleSelectCol} />
+                        </div>
+
+                        {/* Fils  */}
+                        <div className='flex flex-col'>
+                            <label htmlFor='threads' className='text-left font-semibold'>Fils: </label>
+                            <div className='flex flex-wrap'>
+                                {threadsList.map((thread, index) => ( 
+                                    <div key={index} className='flex items-center gap-1 mx-2'>
+                                        <input type='radio' name='threads' id={thread} value={thread} onChange={handleChange} />
+                                        <label className='border-b border-secondary cursor-pointer' htmlFor={thread}>{thread}</label>
+                                    </div>
+                                ))}
+                             </div>
+                        </div>
+
+                        {/* Taille  */}
+                        <div>
+                            <label htmlFor='size' className='text-left font-semibold'>Taille: </label>
+                            <div className='flex flex-wrap'>
+                                {sizeList.map((size, index) => ( 
+                                    <div key={index} className='flex items-center gap-1 mx-2'>
+                                        <input type='radio' name='size' id={size} value={size} onChange={handleChange} />
+                                        <label className='border-b border-secondary cursor-pointer' htmlFor={size}>{size}</label>
+                                    </div>
+                                ))}
+                             </div>
+                        </div>
+
+                        {/* Prix  */}
                         <div className='flex gap-2'>
                             <input type='number' name='price' id='price' min={0} 
                             className={`min-w-[10px] px-1 rounded-md text-center`}
@@ -175,54 +252,32 @@ const ProductForm = () => {
                             onChange={handleChange} /> €
                         </div>
 
-                        <div className='flex flex-col'>
-                            <label htmlFor='category'>Categorie</label>
-                            <select name='category' id='category' onChange={handleChange}>
-                               {categories?.map((categorie, index) => (
-                                     <option key={index} value={categorie.category_name}>{categorie.category_name}</option>
-                               ))}
-                            </select>
-                        </div>
+                            {/* Couleur  */}
+                            <div className='flex items-center gap-4'>
+                                <label htmlFor='color' className='text-left font-semibold'>Couleur: </label>
+                                <input className='cursor-pointer' type='color' name='color' id='color' value={product.color} onChange={handleChange} />
+                            </div>
 
-                        <div className='flex flex-col'>
-                            <label htmlFor='attributes'>Types</label>
-                            <select name='attributes' id='attributes' multiple className='h-52 rounded-md p-1'>
-                               {types?.map((type, index) => (
-                                     <option  
-                                     className={`${product.attributes.includes(type.attribute_name) && 'bg-primary rounded-md'} cursor-pointer mx-1 py-[1px] my-2 text-center font-bold border-b-2`}
-                                      key={index} value={type.attribute_name} 
-                                      onClick={handleSelectType}>
-                                        {type.attribute_name}
-                                      </option>
-                               ))}
-                            </select>
-                        </div>
-
-                        <div className='flex flex-col'>
-                            <label htmlFor='gender'>Genre</label>
-                            <select name='gender' id='gender' onChange={handleChange}>
-                               {genderList.map((gender, index) => (
-                                     <option key={index} value={gender}>{gender}</option>
-                               ))}
-                            </select>
-                        </div>
-
-                        <div className='flex justify-center gap-2'>
-                            {sizeList.map((size, index) => (
-                                <div 
-                                className={`rounded-full items-center flex justify-center p-1 cursor-pointer ${product.sizes.includes(size)? 'bg-secondary': 'bg-gray-200'}`}
-                                onClick={handleSelectSizes}>
-                                    {size} 
-                                </div>
-                            ))}
-                        </div>
+                            <div>
+                                <label htmlFor='stock_quantity' className='text-left font-semibold'>Quantité: </label>
+                                <input className='w-6 rounded-md text-center' type='number' name='stock_quantity' id='stock_quantity' min={0} value={product.stock_quantity} onChange={handleChange} />
+                            </div>
 
                     </div>
                 </div>
 
                     <div className='flex justify-center mt-8'>
-                        <button className='bg-white rounded-md px-4 py-2 text-primary font-bold' onClick={saveProduct}>Enregistrer</button>
+                        <button className='bg-white rounded-md px-4 py-2 text-primary font-bold hover:opacity-50' onClick={saveProduct}>Enregistrer</button>
                     </div>
+
+                    {loader && <div className='flex justify-center mt-4'>
+                        <div className="loader ease-linear rounded-full border-8 border-t-8 border-red-700 h-10 w-10"></div>
+                    </div>}
+
+                    {message.type && <div className={`mt-4 p-2 rounded-md flex justify-between px-4 relative text-white ${message.type === 'success' ? 'bg-green-500' : 'bg-red-500'}`}>
+                        {message.content}
+                        <div className='cursor-pointer' onClick={()=> setMessage({type: '', content: ''})}> X </div>
+                    </div>}
             </div>
         </div>
     );
