@@ -6,6 +6,70 @@ import productsAPI from '@/API/products.api';
 import ProductInfos from './ProductInfos';
 import {Christmasloader } from './utilities/Loaders';
 
+const ProductsTest = [
+    {
+        id: 1,
+        category: 'Hommes',
+        title: 'Pull',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+        price: 50,
+        color: 'red',
+        matter: 'coton',
+        col: 'V',
+        threads: '2 fils',
+        image_url: 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg',
+        size: 'M',
+    },
+    {
+        id: 2,
+        category: 'Femmes',
+        title: 'Pull',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+        price: 50,
+        color: 'red',
+        matter: 'coton',
+        col: 'V',
+        threads: '2 fils',
+        image_url: 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg',
+        size: 'M',
+    },
+    {
+        id: 3,
+        category: 'Hommes',
+        title: 'Pull',
+        price: 50,
+        color: 'red',
+        matter: 'coton',
+        col: 'V',
+        threads: '2 fils',
+        image_url: 'https://lookhomme.com/wp-content/uploads/2019/08/Pull-cachemire-homme.jpg',
+        size: 'M',
+    },
+    {
+        id: 4,
+        category: 'Hommes',
+        title: 'Pull',
+        price: 50,
+        color: 'red',
+        matter: 'coton',
+        col: 'V',
+        threads: '2 fils',
+        image_url: 'https://lookhomme.com/wp-content/uploads/2019/08/Pull-cachemire-homme.jpg',
+        size: 'M',
+    },
+    {
+        id: 5,
+        category: 'Hommes',
+        title: 'Pull',
+        price: 50,
+        color: 'red',
+        matter: 'coton',
+        col: 'V',
+        threads: '2 fils',
+        image_url: 'https://lookhomme.com/wp-content/uploads/2019/08/Pull-cachemire-homme.jpg',
+        size: 'M',
+    },
+];
 const Novelty = () => {
 
     const modal = useRef(null);
@@ -15,7 +79,7 @@ const Novelty = () => {
     const [selectedProduct, setSelectedProduct] = useState({});
     const [showModal, setShowModal] = useState(false);
 
-    const listGenders = ['Femmes', 'Hommes', 'Garçons', 'Filles', 'Accessoires'];
+    const listCategories = ['Femmes', 'Hommes', 'Enfants', 'Accessoires'];
 
     useEffect(() => {
         setLoading(true);
@@ -31,6 +95,7 @@ const Novelty = () => {
             const res = await productsAPI.getProducts();
             console.log('res', res)
             setProducts(res);
+            // setProducts(ProductsTest);
             setLoading(false);
         } catch (err) {
             console.log(err);
@@ -50,6 +115,10 @@ const Novelty = () => {
         }
     };
 
+    const handleClose = () => {
+        setShowModal(false);
+    };
+
     return (
         <div className='w-[70%] mx-auto '>
             
@@ -57,15 +126,15 @@ const Novelty = () => {
                 <div className='mt-10 flex flex-col gap-10'>
                     
             {/* FEMMES  */}
-            {listGenders?.map((list) => (
-                <ProductList products={products} infosProduct={infosProduct}  list={list} />
+            {listCategories?.map((list, index) => (
+                <ProductList key={index} products={products} infosProduct={infosProduct} list={list} />
             ))}
 
 
             {/* Modal */}
             {showModal && (
              <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center dialog' onClick={handleOutsideClick}  >
-                <ProductInfos product={selectedProduct} setShowModal={setShowModal} />
+                <ProductInfos product={selectedProduct} setShowModal={setShowModal} handleClose={handleClose} />
             </div>
             )}
             
@@ -102,10 +171,10 @@ const ProductList = ({products, infosProduct, list}) => {
 
                 </div>
 
-                <div className='grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-items-center justify-center mt-6 '>
+                <div className='flex flex-wrap items-center gap-6 justify-center '>
                     {/* Card */}
-                    {products?.filter(p => p.gender == list).slice(0, number).map((product, index) => (
-                            <ProductCard key={`${index}-${product.title}`} product={product} infosProduct={infosProduct}  />
+                    {products?.filter(p => p.category == list).slice(0, number).map((product, index) => (
+                            <ProductCard key={product.id} product={product} infosProduct={infosProduct}  />
                     ))}
                 </div>
             </div>
