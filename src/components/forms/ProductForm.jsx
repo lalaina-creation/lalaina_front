@@ -20,6 +20,10 @@ const ProductForm = () => {
     const sizeList = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'TU'];
     const threadsList = ['2 fils', '3 fils', '4 fils']
 
+
+    const [images, setImages] = useState([]);
+
+    
     
     const [colsList, setColsList] = useState([]);
     const [mattersList, setMattersList] = useState([]);
@@ -32,7 +36,7 @@ const ProductForm = () => {
         title: '',
         description: '',
         price: 0,
-        image_url: '',
+        images: [],
         category: '',
         matter: '',
         col: '',
@@ -79,49 +83,34 @@ const ProductForm = () => {
             })
     }
 
+    //NEW
+    const handleFileChange = (e) => {
+        const selectedImages = Array.from(e.target.files);
+        setImages(selectedImages);
+      };
+    
+      const handleSubmit = (e) => {
+        e.preventDefault();
+    
+        const formData = new FormData();
+        images.forEach((image, index) => {
+          formData.append(`images[${index}]`, image);
+        });
+    }
+
 
     const handleChange = (e) => {
         setProduct({...product, [e.target.name]: e.target.value});
     }
 
-    const importImage = () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-      
-        input.onchange = (e) => {
-          const file = e.target.files[0];
-          if (file) {
-            setProduct({ ...product, image_url: file }); // Set the file object
-          }
-        };
-      
-        input.click();
-      };
-
-
-      const handleSelectType = (e) => {
-        const type = e.target.value;
-        const index = product.attributes.indexOf(type);
-        if(index === -1) {
-            setProduct({...product, attributes: [...product.attributes, type]});
-        } else {
-            const newAttributes = product.attributes.filter(attribute => attribute !== type);
-            setProduct({...product, attributes: newAttributes});
-        }
-        console.log(product.attributes);
-    }
-
-  
-
       const saveProduct = () => {
         setLoader(true);
+        product.images = images;
         const form = new FormData();
         
         form.append('title', product.title);
         form.append('description', product.description);
         form.append('price', product.price);
-        form.append('image', product.image_url); // Use 'file' as the field name for the image
         form.append('category', product.category);
         form.append('matter', product.matter);
         form.append('col', product.col);
@@ -129,26 +118,32 @@ const ProductForm = () => {
         form.append('size', product.size);
         form.append('color', product.color);
         form.append('stock_quantity', product.stock_quantity);
+        images.forEach((image, index) => {
+            form.append('images', image);
+        });
+
         
         productsAPI.addProduct(form)
         .then(res => {
             console.log('produit ajouté:' , res)
             if(res.status === 201) {
-                setProduct({
-                    title: '',
-                    description: '',
-                    price: 0,
-                    image_url: '',
-                    category: '',
-                    matter: '',
-                    col: '',
-                    threads: '',
-                    size: '',
-                    color: '',
-                    stock_quantity: 1
-                });
+                // setProduct({
+                //     title: '',
+                //     description: '',
+                //     price: 0,
+                //     images: [],
+                //     category: '',
+                //     matter: '',
+                //     col: '',
+                //     threads: '',
+                //     size: '',
+                //     color: '',
+                //     stock_quantity: 1
+                // });
+
                 setLoader(false);
                 setMessage({type: 'success', content: 'Produit enregistré avec succès'});
+                window.location.reload();
             }
         })
         .catch(err => {
@@ -182,13 +177,37 @@ const ProductForm = () => {
                 <h1 className='font-bold text-2xl text-center text-white underline'>Ajouter un article</h1>
                 <div className='mt-4 grid grid-cols-2 gap-4'>
                         {/* IMAGE  */}
-                    <div className='flex justify-center'>
-                        <img src={product.image_url? URL.createObjectURL(product.image_url) : 'https://st3.depositphotos.com/23594922/31822/v/1600/depositphotos_318221368-stock-illustration-missing-picture-page-for-website.jpg' } 
-                        alt='product' 
-                        className='w-full h-full rounded-md border  object-contain cursor-pointer' 
-                        onClick={importImage} />
+                    <div className='flex justify-center flex-col'>
+                        {images.length > 0? (
+                            <div className={`w-full h-full rounded-md border grid ${images.length!=1? 'grid-cols-2': ' grid-cols-1'}`}>
+                                {images.map((image, index) => (
+                                    <img key={index} src={URL.createObjectURL(image)} alt='product' 
+                                    className={`rounded-md border object-cover cursor-pointer w-full h-full`} 
+                                     />
+                                ))}
+                            </div>
+                        ):
+                        (
+                        <img src='https://st3.depositphotos.com/23594922/31822/v/1600/depositphotos_318221368-stock-illustration-missing-picture-page-for-website.jpg' 
+                            alt='product' 
+                            className='w-full h-full rounded-md border object-contain cursor-pointer' 
+                             /> 
+                        )}
                         
+                        <div className='flex justify-center mt-4'>
+                            <input
+                            type="file"
+                            id="imageUpload"
+                            name="images"
+                            accept="image/*"
+                            multiple
+                            onChange={handleFileChange}
+                            />
+                        </div>
                     </div>
+                   
+                    
+                    
 
                         {/* FORMULAIRE  */}
                     <div className='flex flex-col gap-4'>

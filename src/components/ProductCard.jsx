@@ -49,12 +49,11 @@ const ProductCard = ({product, infosProduct}) => {
             onMouseLeave={()=> setIshovered(false)} 
             >
                 <img 
-                    src={product?.image_url? `${process.env.API_URL}/${product.image_url}` : 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg'}
+                    src={product?.images[0]? `${process.env.API_URL}/${product.images[0]}` : 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg'}
                     alt='product' 
                     className='w-full object-cover h-[380px] mx-auto'
                     onClick={seeProduct}
                 />
-                {/* <img src={product?.image_url? `${process.env.API_URL}/${product.image_url}` : 'https://lookhomme.com/wp-content/uploads/2019/08/Pull-cachemire-homme.jpg'} alt='product' className='w-full h-full rounded-t-xl' /> */}
                 <div className='absolute flex justify-between w-full top-[50%]'>
                     <FaChevronLeft size={30} className='hover:text-primary transition-colors cursor-pointer' 
                     onMouseEnter={()=>setIshovered(false)} 

@@ -30,20 +30,22 @@ const ProductInfos = ({product, handleClose}) => {
            <AiOutlineClose size={30} className='absolute top-5 right-5 cursor-pointer' onClick={handleClose} />
 
            <div className='bg-gray-200 w-1/2 h-full flex flex-col'>
-            <div className='relative h-[80%]'>
-                <img 
-                    src={product?.image_url? `${process.env.API_URL}/${product.image_url}` : 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg'}
-                    alt='product' 
-                    className='w-full object-contain h-full mx-auto'
-                />
-                 <div className='absolute flex justify-between w-full top-[40%]'>
-                    <FaChevronLeft size={30} className='hover:text-primary transition-colors cursor-pointer' 
-                    onMouseEnter={()=>setIshovered(false)} 
-                    onMouseLeave={()=> setIshovered(true)} />
+            <div className='relative h-[80%] flex justify-center items-center flex-col'>
+                <div className='relative w-full h-full mx-auto'>
+                    <img 
+                        src={product?.images[0]? `${process.env.API_URL}/${product.images[0]}` : 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg'}
+                        alt='product' 
+                        className='w-full object-contain h-full mx-auto'
+                    />
+                    <div className='absolute flex justify-between w-full top-[40%] text-primary'>
+                        <FaChevronLeft size={30} className='hover:text-primary transition-colors cursor-pointer' 
+                        onMouseEnter={()=>setIshovered(false)} 
+                        onMouseLeave={()=> setIshovered(true)} />
 
-                    <FaChevronRight size={30} className='hover:text-primary transition-colors cursor-pointer'
-                    onMouseEnter={()=>setIshovered(false)} 
-                    onMouseLeave={()=> setIshovered(true)} />
+                        <FaChevronRight size={30} className='hover:text-primary transition-colors cursor-pointer'
+                        onMouseEnter={()=>setIshovered(false)} 
+                        onMouseLeave={()=> setIshovered(true)} />
+                    </div>
                 </div>
                 
                 <div className='relative w-full flex flex-col mt-4 cursor-pointer'>

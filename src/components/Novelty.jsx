@@ -17,7 +17,7 @@ const ProductsTest = [
         matter: 'coton',
         col: 'V',
         threads: '2 fils',
-        image_url: 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg',
+        images: 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg',
         size: 'M',
     },
     {
@@ -30,7 +30,7 @@ const ProductsTest = [
         matter: 'coton',
         col: 'V',
         threads: '2 fils',
-        image_url: 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg',
+        images: 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg',
         size: 'M',
     },
     {
@@ -42,7 +42,7 @@ const ProductsTest = [
         matter: 'coton',
         col: 'V',
         threads: '2 fils',
-        image_url: 'https://lookhomme.com/wp-content/uploads/2019/08/Pull-cachemire-homme.jpg',
+        images: 'https://lookhomme.com/wp-content/uploads/2019/08/Pull-cachemire-homme.jpg',
         size: 'M',
     },
     {
@@ -54,7 +54,7 @@ const ProductsTest = [
         matter: 'coton',
         col: 'V',
         threads: '2 fils',
-        image_url: 'https://lookhomme.com/wp-content/uploads/2019/08/Pull-cachemire-homme.jpg',
+        images: 'https://lookhomme.com/wp-content/uploads/2019/08/Pull-cachemire-homme.jpg',
         size: 'M',
     },
     {
@@ -66,7 +66,7 @@ const ProductsTest = [
         matter: 'coton',
         col: 'V',
         threads: '2 fils',
-        image_url: 'https://lookhomme.com/wp-content/uploads/2019/08/Pull-cachemire-homme.jpg',
+        images: 'https://lookhomme.com/wp-content/uploads/2019/08/Pull-cachemire-homme.jpg',
         size: 'M',
     },
 ];
