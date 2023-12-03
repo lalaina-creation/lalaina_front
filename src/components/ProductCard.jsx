@@ -16,6 +16,8 @@ const ProductCard = ({product, infosProduct}) => {
     const [ishovered, setIshovered] = useState(false);
     const [showColors, setShowColors] = useState(false);
 
+    const [showingImage, setShowingImage] = useState(0);
+
     // const router = useRouter();
     
     useEffect(() => {
@@ -39,6 +41,22 @@ const ProductCard = ({product, infosProduct}) => {
             document.removeEventListener('mousedown', handleClickOutside);
         }
     }, [colorsDialog]);
+
+    const slideImageLeft = () => {
+        if(showingImage === 0) {
+            setShowingImage(product.images.length-1);
+        } else {
+            setShowingImage(showingImage-1);
+        }
+    }
+
+    const slideImageRight = () => {
+        if(showingImage === product.images.length-1) {
+            setShowingImage(0);
+        } else {
+            setShowingImage(showingImage+1);
+        }
+    }
     
 
 
@@ -47,9 +65,10 @@ const ProductCard = ({product, infosProduct}) => {
             <div className='items-center relative w-[300px]' 
             onMouseEnter={()=>setIshovered(true)} 
             onMouseLeave={()=> setIshovered(false)} 
+            style={{ userSelect: 'none' }}
             >
                 <img 
-                    src={product?.images[0]? `${process.env.API_URL}/${product.images[0]}` : 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg'}
+                    src={product?.images[showingImage]? `${process.env.API_URL}/${product.images[showingImage]}` : 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg'}
                     alt='product' 
                     className='w-full object-cover h-[380px] mx-auto'
                     onClick={seeProduct}
@@ -57,11 +76,16 @@ const ProductCard = ({product, infosProduct}) => {
                 <div className='absolute flex justify-between w-full top-[50%]'>
                     <FaChevronLeft size={30} className='hover:text-primary transition-colors cursor-pointer' 
                     onMouseEnter={()=>setIshovered(false)} 
-                    onMouseLeave={()=> setIshovered(true)} />
+                    onMouseLeave={()=> setIshovered(true)} 
+                    onClick={slideImageLeft}
+                    />
 
                     <FaChevronRight size={30} className='hover:text-primary transition-colors cursor-pointer'
                     onMouseEnter={()=>setIshovered(false)} 
-                    onMouseLeave={()=> setIshovered(true)} />
+                    onMouseLeave={()=> setIshovered(true)} 
+                    onClick={slideImageRight}
+                    />
+                    
                 </div>
                 {ishovered && <div className='absolute bottom-2 flex justify-center w-full h-[100px]'>
                     <div className='bg-white w-full mx-4 border border-black justify-center text-center relative'>
