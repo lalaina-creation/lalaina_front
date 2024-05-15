@@ -48,7 +48,7 @@ const ProductInfos = ({product, handleClose}) => {
         <div className='bg-gray-200 p-5 rounded-md w-5/6 xl:w-4/6 2xl:w-3/6 h-5/6 relative shadow-2xl items-center border-primary border-2 overflow-y-auto flex flex-col sm:flex md:flex-row lg-flex-row xl:flex-row justify-evenly'>
            <AiOutlineClose size={30} className='absolute top-5 right-5 cursor-pointer' onClick={handleClose} />
 
-           <div className='bg-gray-200 h-full w-full flex flex-col items-center'>
+           <div className='bg-gray-200 h-full w-full flex flex-col justify-center items-center'>
             <div className='relative h-[80%] flex w-full justify-center items-center flex-col'>
                 <div className='relative w-full h-full mx-auto' style={{ userSelect: 'none' }}>
                     <img 
