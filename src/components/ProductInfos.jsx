@@ -72,7 +72,7 @@ const ProductInfos = ({product, handleClose}) => {
                 </div>
                 
                 <div className='relative w-full flex flex-col mt-4 cursor-pointer'>
-                    <div className='text-center text-orange-500 flex justify-center' onClick={()=> setShowColors(true)}>
+                    <div className='text-center text-orange-500 flex justify-center mt-3' onClick={()=> setShowColors(true)}>
                         <img src='https://cdn.iconscout.com/icon/free/png-256/free-color-palette-1594598-1348703.png' alt='color' className='w-8 h-8' />
                     </div>
                     {showColors && <div className='absolute flex justify-center w-full h-[100px] z-50' ref={colorsDialog}>
@@ -87,7 +87,7 @@ const ProductInfos = ({product, handleClose}) => {
             </div>
            </div>
 
-           <div className='w-1/2 h-full flex flex-col gap-4 items-center justify-center'>
+           <div className='w-fullh-full flex flex-col gap-4 items-center justify-center'>
                 <div className='flex flex-col gap-8 w-full items-center'>
                     <span className='font-bold text-center ml-2 first-letter:uppercase text-2xl'>{product.title} - {product.matter} </span>
                     <span className='text-center text-2xl font-bold text-primary'>{product.price} € </span>
