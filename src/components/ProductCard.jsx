@@ -1,10 +1,5 @@
-import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
-import { Tags } from './utilities/Elements';
-import { FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-
-
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 
 const ProductCard = ({product, infosProduct}) => {
@@ -12,17 +7,11 @@ const ProductCard = ({product, infosProduct}) => {
     const colorsDialog = useRef(null);
 
     const sizeList = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'TU'];
-    const listColors = ['red', 'blue', 'green', 'yellow', 'black', 'white', 'gray', 'purple', 'purple', 'pink', 'orange', 'brown', 'beige', 'cyan', 'magenta', 'red'];
     const [ishovered, setIshovered] = useState(false);
     const [showColors, setShowColors] = useState(false);
 
     const [showingImage, setShowingImage] = useState(0);
 
-    // const router = useRouter();
-    
-    useEffect(() => {
-        console.log(product);
-    }, [product]);
 
     const seeProduct = () => {
         infosProduct(product);
@@ -73,6 +62,7 @@ const ProductCard = ({product, infosProduct}) => {
                     className='w-full object-cover h-[380px] mx-auto'
                     onClick={seeProduct}
                 />
+                {product?.images.length > 1 && (
                 <div className='absolute flex justify-between w-full top-[50%]'>
                     <FaChevronLeft size={30} className='hover:text-primary transition-colors cursor-pointer' 
                     onMouseEnter={()=>setIshovered(false)} 
@@ -87,6 +77,7 @@ const ProductCard = ({product, infosProduct}) => {
                     />
                     
                 </div>
+                )}
                 {ishovered && <div className='absolute bottom-2 flex justify-center w-full h-[100px]'>
                     <div className='bg-white w-full mx-4 border border-black justify-center text-center relative'>
                         <div className='flex gap-3 justify-center items-center mx-3 h-full'>
@@ -105,13 +96,14 @@ const ProductCard = ({product, infosProduct}) => {
                     <span className='text-center text-2xl font-bold text-primary'>{product.price} € </span>
                 </div>
                     <div className='relative w-full flex flex-col'>
-                        <span className='text-center' onClick={()=> setShowColors(true)}>Couleurs</span>
+                        <div className='text-center text-orange-500 flex justify-center' onClick={()=> setShowColors(true)}>
+                            <img src='https://cdn.iconscout.com/icon/free/png-256/free-color-palette-1594598-1348703.png' alt='color' className='w-8 h-8' />
+                        </div>
                         {showColors && <div className='absolute flex justify-center w-full h-[100px] z-50' ref={colorsDialog}>
                             <div className='bg-white border border-black w-full h-full mx-4'>
-                                <div className='p-3 flex flex-wrap justify-around w-full h-full'>
-                                    {listColors.map((color, index) => (
-                                        <div key={index} className='w-5 h-5 rounded-full bg-black border m-1' style={{backgroundColor: color}}></div>
-                                    ))}
+                                <div className='p-3 flex flex-wrap justify-around items-center w-full h-full'>
+                                    <div className={`rounded-full w-6 h-6 flex justify-center items-center border`} style={{backgroundColor: product.color}}>
+                                    </div>
                                 </div>
                             </div>
                         </div>}

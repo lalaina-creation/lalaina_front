@@ -18,13 +18,22 @@ const ProductForm = () => {
         {id: 4, title: 'Accessoires'} 
     ];
     const sizeList = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'TU'];
-    const threadsList = ['2 fils', '3 fils', '4 fils']
+    const threadsList = ['2 fils', '3 fils', '4 fils', '12 fils']
+    const washList = [
+        {
+            title: "Lavage à la main",
+            icon: ""
+        },
+        {
+            title: "Repassage interdit",
+            icon: ""
+        }
+
+    ]
 
 
     const [images, setImages] = useState([]);
 
-    
-    
     const [colsList, setColsList] = useState([]);
     const [mattersList, setMattersList] = useState([]);
     const [productsList, setProductsList] = useState([]);
@@ -173,16 +182,16 @@ const ProductForm = () => {
 
     return (
         <div className='inset-0 fixed top-0 left-0 flex justify-center items-center lg:w-2/3 w-5/6 mx-auto '>
-            <div className='bg-primary rounded-md p-4 shadow-lg max-h-screen overflow-auto'>
+            <div className='bg-primary rounded-md p-6 shadow-lg max-h-screen h-[94%] overflow-auto'>
                 <h1 className='font-bold text-2xl text-center text-white underline'>Ajouter un article</h1>
-                <div className='mt-4 grid grid-cols-2 gap-4'>
+                <div className='mt-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4'>
                         {/* IMAGE  */}
                     <div className='flex justify-center flex-col'>
                         {images.length > 0? (
                             <div className={`w-full h-full rounded-md border grid ${images.length!=1? 'grid-cols-2': ' grid-cols-1'}`}>
                                 {images.map((image, index) => (
                                     <img key={index} src={URL.createObjectURL(image)} alt='product' 
-                                    className={`rounded-md border object-cover cursor-pointer w-full h-full`} 
+                                    className={`rounded-md border object-contain cursor-pointer w-full h-full`} 
                                      />
                                 ))}
                             </div>
@@ -206,7 +215,6 @@ const ProductForm = () => {
                         </div>
                     </div>
                    
-                    
                     
 
                         {/* FORMULAIRE  */}
@@ -271,15 +279,28 @@ const ProductForm = () => {
                             onChange={handleChange} /> €
                         </div>
 
-                            {/* Couleur  */}
-                            <div className='flex items-center gap-4'>
-                                <label htmlFor='color' className='text-left font-semibold'>Couleur: </label>
-                                <input className='cursor-pointer' type='color' name='color' id='color' value={product.color} onChange={handleChange} />
-                            </div>
+                            <div className='flex justify-evenly'>
+                                <div className='flex flex-col items-center gap-2'>
+                                {/* Couleur  */}
+                                    <div className='flex items-center gap-4'>
+                                        <label htmlFor='color' className='text-left font-semibold'>Couleur: </label>
+                                        <input className='cursor-pointer' type='color' name='color' id='color' value={product.color} onChange={handleChange} />
+                                    </div>
 
-                            <div>
-                                <label htmlFor='stock_quantity' className='text-left font-semibold'>Quantité: </label>
-                                <input className='w-6 rounded-md text-center' type='number' name='stock_quantity' id='stock_quantity' min={0} value={product.stock_quantity} onChange={handleChange} />
+                                    <div>
+                                        <label htmlFor='stock_quantity' className='text-left font-semibold'>Quantité: </label>
+                                        <input className='w-6 rounded-md text-center' type='number' name='stock_quantity' id='stock_quantity' min={0} value={product.stock_quantity} onChange={handleChange} />
+                                    </div>
+                                </div>
+                                <div>
+                                    {washList.map((wash, index) => (
+                                        <div key={index} className='flex items-center gap-2'>
+                                            <input type='checkbox' name={wash.title} id={wash.title} />
+                                            <label htmlFor={wash.title}>{wash.title}</label>
+                                        </div>
+                                    
+                                    ))}
+                                </div>
                             </div>
 
                     </div>

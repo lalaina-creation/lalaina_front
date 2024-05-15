@@ -1,10 +1,12 @@
 'use client'
 import Image from 'next/image';
-import React, { useState } from 'react';
-import { FaBars, FaCross, FaFacebook, FaInstagram, FaSearch, FaWindowClose } from 'react-icons/fa';
+import React, { useContext, useState } from 'react';
+import { FaBars, FaFacebook, FaInstagram, FaSearch, FaWindowClose } from 'react-icons/fa';
 import Logo from '../../assets/images/logo.png';
+import { Context } from '../../context/context';
 
 const Navbar = () => {
+  const { search, setSearch} = useContext(Context);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -12,12 +14,14 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex justify-evenly items-center bg-gray-200 w-full p-5">
+    <nav className="fixed top-0 left-0 z-50 flex justify-evenly items-center bg-gray-200 w-full p-5">
       <div className="flex gap-4">
         <Image src={Logo} alt="Logo" width={120} height={120} />
         <div className="hidden rounded-md px-2 py-1 sm:flex items-center">
           <FaSearch className="text-gray-400 mr-2" />
           <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className="rounded-md px-2 py-1 border border-primary"
             type="text"
             placeholder="Rechercher"
@@ -46,8 +50,8 @@ const Navbar = () => {
         </span>
         </a>
         <div className="ml-10 flex gap-4">
-          <FaInstagram className="text-2xl text-primary" />
-          <FaFacebook className="text-2xl text-primary" />
+          <FaInstagram className="text-2xl text-primary cursor-pointer" />
+          <FaFacebook className="text-2xl text-primary cursor-pointer" />
         </div>
       </div>
       {menuOpen && (
@@ -60,21 +64,31 @@ const Navbar = () => {
             <div className='border border-black border-b-0 w-3/4 mx-auto my-6'/>
 
                 <div className='flex flex-col gap-8'>
-                    <span className="block text-2xl hover:text-primary cursor-pointer">
-                    Nouveautés
-                    </span>
-                    <span className="block text-2xl hover:text-primary cursor-pointer">
-                    Femmes
-                    </span>
-                    <span className="block text-2xl hover:text-primary cursor-pointer">
-                    Hommes
-                    </span>
-                    <span className="block text-2xl hover:text-primary cursor-pointer">
-                    Enfants
-                    </span>
-                    <span className="block text-2xl hover:text-primary cursor-pointer">
-                    Accessoires
-                    </span>
+                    <a href="#" onClick={() => setMenuOpen(false)}>
+                      <span className="block text-2xl hover:text-primary cursor-pointer">
+                      Nouveautés
+                      </span>
+                    </a>
+                    <a href="#Femmes" onClick={() => setMenuOpen(false)}>
+                      <span className="block text-2xl hover:text-primary cursor-pointer">
+                      Femmes
+                      </span>
+                    </a>
+                    <a href="#Hommes" onClick={() => setMenuOpen(false)}>
+                      <span className="block text-2xl hover:text-primary cursor-pointer">
+                      Hommes
+                      </span>
+                    </a>
+                    <a href="#Enfants" onClick={() => setMenuOpen(false)}>
+                      <span className="block text-2xl hover:text-primary cursor-pointer">
+                      Enfants
+                      </span>
+                    </a>
+                    <a href="#Accessoires" onClick={() => setMenuOpen(false)}>
+                      <span className="block text-2xl hover:text-primary cursor-pointer">
+                      Accessoires
+                      </span>
+                    </a>
                 </div>
 
             <div className='border border-black border-b-0 w-3/4 mx-auto my-6'/>

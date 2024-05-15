@@ -69,7 +69,9 @@ const ProductInfos = ({product, handleClose}) => {
                 </div>
                 
                 <div className='relative w-full flex flex-col mt-4 cursor-pointer'>
-                    <span className='text-center' onClick={()=> setShowColors(true)}>Couleurs</span>
+                    <div className='text-center text-orange-500 flex justify-center' onClick={()=> setShowColors(true)}>
+                        <img src='https://cdn.iconscout.com/icon/free/png-256/free-color-palette-1594598-1348703.png' alt='color' className='w-8 h-8' />
+                    </div>
                     {showColors && <div className='absolute flex justify-center w-full h-[100px] z-50' ref={colorsDialog}>
                         <div className='bg-white border border-black w-full h-full mx-4'>
                             <div className='p-3 flex flex-wrap justify-around w-full h-full'>
