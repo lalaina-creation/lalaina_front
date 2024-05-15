@@ -94,7 +94,7 @@ const ProductInfos = ({product, handleClose}) => {
                     {/* INFOS  */}
                     <div className='text-center'>
                         <span className='font-semibold text-center'>Description</span>
-                        <div className='border bg-white border-black w-3/4 mx-auto text-center'>
+                        <div className='border bg-white border-black w-3/4 mx-auto text-center p-2 rounded-md'>
                             <div className='flex flex-col gap-1 text-center justify-center'>
                                 <span className='font-bold'>Infos: Col {product.col} - {product.threads} </span>
                                 <div>
@@ -106,7 +106,7 @@ const ProductInfos = ({product, handleClose}) => {
 
                     {/* TAILLES  */}
                     <div className='mt-4 flex justify-center w-full h-[100px] mx-auto'>
-                        <div className='bg-white w-full mx-4 border border-black justify-center text-center relative'>
+                        <div className='bg-white w-full mx-4 border border-black justify-center text-center relative rounded-md'>
                             <div className='flex gap-3 justify-center items-center px-3 h-full w-full'>
                                 {sizeList.map((size, index) => (
                                     <div key={index} className={`${index <=4? 'text-primary font-bold': 'text-gray-500 opacity-60'}`}>
