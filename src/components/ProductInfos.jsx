@@ -119,17 +119,15 @@ const ProductInfos = ({product, handleClose}) => {
                     </div>
                 </div>
 
-                <div className='flex justify-center gap-6 mt-6'>
-                    <FaWater size={40} />
-                    <FaHandsWash size={40} />                   
+                <div className='flex justify-center gap-6 mt-6 items-center'>
+                    <img src="/assets/icons/ironer.png" alt="ironer" className="w-12 h-12" />
+                    <img src="/assets/icons/hand_wash.png" alt="hand_wash" className="w-12 h-12" />
                 </div>
 
                 <div className='mt-6 flex items-center'>
                     Ajouter aux favoris
                     <FaStar size={30} className='ml-2' />
                 </div>
- 
-      
            </div>
         </div>
         </div>
