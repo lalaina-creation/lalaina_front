@@ -44,17 +44,19 @@ const ProductInfos = ({product, handleClose}) => {
     }
 
     return (
-        <div className='bg-gray-200 p-5 rounded-md w-5/6 h-5/6 relative shadow-2xl border-primary border-2 flex justify-between'>
+        <div className='w-full h-full flex items-end pb-8 justify-center'>
+        <div className='bg-gray-200 p-5 rounded-md w-5/6 xl:w-4/6 2xl:w-3/6 h-5/6 relative shadow-2xl items-center border-primary border-2 overflow-y-auto flex flex-col sm:flex md:flex-row lg-flex-row xl:flex-row justify-evenly'>
            <AiOutlineClose size={30} className='absolute top-5 right-5 cursor-pointer' onClick={handleClose} />
 
-           <div className='bg-gray-200 w-1/2 h-full flex flex-col'>
-            <div className='relative h-[80%] flex justify-center items-center flex-col'>
+           <div className='bg-gray-200 h-full w-full flex flex-col items-center'>
+            <div className='relative h-[80%] flex w-full justify-center items-center flex-col'>
                 <div className='relative w-full h-full mx-auto' style={{ userSelect: 'none' }}>
                     <img 
                         src={product?.images[showingImage]? `${process.env.API_URL}/${product.images[showingImage]}` : 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg'}
                         alt='product' 
-                        className='w-full object-contain h-full mx-auto'
+                        className='w-full object-contain h-full mx-auto mt-4'
                     />
+                    {product?.images.length > 1 && (
                     <div className='absolute flex justify-between w-full top-[40%]'>
                         <FaChevronLeft size={30} className='hover:text-primary transition-colors cursor-pointer' 
                         onMouseEnter={()=>setIshovered(false)} 
@@ -66,6 +68,7 @@ const ProductInfos = ({product, handleClose}) => {
                         onMouseLeave={()=> setIshovered(true)}
                         onClick={slideImageRight} />
                     </div>
+                    )}
                 </div>
                 
                 <div className='relative w-full flex flex-col mt-4 cursor-pointer'>
@@ -74,11 +77,10 @@ const ProductInfos = ({product, handleClose}) => {
                     </div>
                     {showColors && <div className='absolute flex justify-center w-full h-[100px] z-50' ref={colorsDialog}>
                         <div className='bg-white border border-black w-full h-full mx-4'>
-                            <div className='p-3 flex flex-wrap justify-around w-full h-full'>
-                                {listColors.map((color, index) => (
-                                    <div key={index} className='w-5 h-5 rounded-full bg-black border m-1' style={{backgroundColor: color}}></div>
-                                ))}
+                        <div className='p-3 flex flex-wrap justify-around items-center w-full h-full'>
+                            <div className={`rounded-full w-6 h-6 flex justify-center items-center border`} style={{backgroundColor: product.color}}>
                             </div>
+                        </div>
                         </div>
                     </div>}
                 </div>
@@ -89,23 +91,23 @@ const ProductInfos = ({product, handleClose}) => {
                 <div className='flex flex-col gap-8 w-full items-center'>
                     <span className='font-bold text-center ml-2 first-letter:uppercase text-2xl'>{product.title} - {product.matter} </span>
                     <span className='text-center text-2xl font-bold text-primary'>{product.price} € </span>
-                    <span className='font-semibold text-center'>Description</span>
-
                     {/* INFOS  */}
-                    <div className='border bg-white border-black w-3/4 mx-auto text-center'>
-                        <div className='flex flex-col gap-1 text-center justify-center'>
-                            <span className='font-bold'>Infos: Col {product.col} - {product.threads} </span>
-                            <div>
-                                <span className='underline'>Texte:</span>
-                                <p> {product.description} </p>
+                    <div className='text-center'>
+                        <span className='font-semibold text-center'>Description</span>
+                        <div className='border bg-white border-black w-3/4 mx-auto text-center'>
+                            <div className='flex flex-col gap-1 text-center justify-center'>
+                                <span className='font-bold'>Infos: Col {product.col} - {product.threads} </span>
+                                <div>
+                                    <p> {product.description} </p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* TAILLES  */}
-                    <div className='mt-4 flex justify-center w-2/3 h-[100px] mx-auto'>
+                    <div className='mt-4 flex justify-center w-full h-[100px] mx-auto'>
                         <div className='bg-white w-full mx-4 border border-black justify-center text-center relative'>
-                            <div className='flex gap-3 justify-center items-center mx-3 h-full'>
+                            <div className='flex gap-3 justify-center items-center px-3 h-full w-full'>
                                 {sizeList.map((size, index) => (
                                     <div key={index} className={`${index <=4? 'text-primary font-bold': 'text-gray-500 opacity-60'}`}>
                                         {size}
@@ -129,6 +131,7 @@ const ProductInfos = ({product, handleClose}) => {
  
       
            </div>
+        </div>
         </div>
                 
     );
