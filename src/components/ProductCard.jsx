@@ -50,8 +50,8 @@ const ProductCard = ({product, infosProduct}) => {
 
 
     return (
-        <div className='flex flex-col h-[500px] rounded-md transition-all cursor-pointer border border-black bg-gray-200 items-center' >
-            <div className='items-center relative w-[300px]' 
+        <div className='flex flex-col h-[440px] rounded-md transition-all cursor-pointer border  bg-gray-200 items-center shadow-xl shadow-gray-400 hover:scale-105' >
+            <div className='items-center relative w-[260px]' 
             onMouseEnter={()=>setIshovered(true)} 
             onMouseLeave={()=> setIshovered(false)} 
             style={{ userSelect: 'none' }}
@@ -59,7 +59,7 @@ const ProductCard = ({product, infosProduct}) => {
                 <img 
                     src={product?.images[showingImage]? `${process.env.API_URL}/${product.images[showingImage]}` : 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg'}
                     alt='product' 
-                    className='w-full object-cover h-[380px] mx-auto'
+                    className='w-full object-cover h-[320px] mx-auto rounded-t-md'
                     onClick={seeProduct}
                 />
                 {product?.images.length > 1 && (
@@ -82,7 +82,7 @@ const ProductCard = ({product, infosProduct}) => {
                     <div className='bg-white w-full mx-4 border border-black justify-center text-center relative'>
                         <div className='flex gap-3 justify-center items-center mx-3 h-full'>
                             {sizeList.map((size, index) => (
-                                <div key={index} className={`${index <=4? 'text-primary font-bold': 'text-gray-500 opacity-60'}`}>
+                                <div key={index} className={`${size == product.size? 'text-primary font-bold': 'text-gray-500 opacity-60'}`}>
                                     {size}
                                 </div>
                             ))}
@@ -97,16 +97,18 @@ const ProductCard = ({product, infosProduct}) => {
                 </div>
                     <div className='relative w-full flex flex-col'>
                         <div className='text-center text-orange-500 flex justify-center' onClick={()=> setShowColors(true)}>
-                            <img src='https://cdn.iconscout.com/icon/free/png-256/free-color-palette-1594598-1348703.png' alt='color' className='w-8 h-8' />
+                            {/* <img src='https://cdn.iconscout.com/icon/free/png-256/free-color-palette-1594598-1348703.png' alt='color' className='w-8 h-8' /> */}
+                            <div className={`rounded-full w-7 h-7 flex justify-center items-center border`} style={{backgroundColor: product.color}}>
+                            </div>
                         </div>
-                        {showColors && <div className='absolute flex justify-center w-full h-[100px] z-50' ref={colorsDialog}>
+                        {/* {showColors && <div className='absolute flex justify-center w-full h-[100px] z-50' ref={colorsDialog}>
                             <div className='bg-white border border-black w-full h-full mx-4'>
                                 <div className='p-3 flex flex-wrap justify-around items-center w-full h-full'>
                                     <div className={`rounded-full w-6 h-6 flex justify-center items-center border`} style={{backgroundColor: product.color}}>
                                     </div>
                                 </div>
                             </div>
-                        </div>}
+                        </div>} */}
                     </div>
                 <div>
             </div>

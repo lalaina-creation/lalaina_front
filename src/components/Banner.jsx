@@ -79,12 +79,21 @@ const Banner = () => {
     
 
     return (
-        <div className='h-[40vh] w-full mt-12 relative'>
+        <div className='h-[50vh] w-full mt-12 relative'>
             <img src={edit ? editValues.image : banner.image} alt='Banner' className='w-full h-full object-cover' />
-            <div className='absolute right-2 top-16 z-50 cursor-pointer' onClick={editBanner}>
-                {edit ? <FaCheck className='text-3xl text-green-500' /> : <CiEdit className='text-3xl text-primary' />}
+            <div className='absolute right-2 top-16 z-40 cursor-pointer' onClick={editBanner}>
+                {edit ?
+                <div className='p-2 rounded-md bg-white flex items-center justify-center'>
+                    <FaCheck className='text-3xl text-green-500' />
+                </div> 
+                : 
+                <div className='p-2 rounded-md bg-white flex items-center justify-center'>
+                    <CiEdit className='text-3xl text-primary' />
+                </div>
+                }
             </div>
-            <div className='absolute top-1/2 w-full text-center text-xl font-bold'>
+            {!edit && (<div className={`absolute top-2/3 w-full h-32 bg-white opacity-70`} />)}
+            <div className={`absolute w-full mt-8 text-center text-xl font-bold ${edit? 'top-1/3' : 'top-2/3'}`}>
                 {edit ? (
                     <input
                         type='text'
@@ -94,7 +103,7 @@ const Banner = () => {
                         className='bg-white bg-opacity-75 p-2 rounded text-center'
                     />
                 ) : (
-                    <span className='uppercase underline text-primary'>{banner.title}</span>
+                    <span className='uppercase underline text-primary text-2xl'>{banner.title}</span>
                 )}
                 <div className='mt-2 text-clip w-full flex justify-center'>
                     {edit ? (
@@ -105,7 +114,7 @@ const Banner = () => {
                             className='bg-white bg-opacity-75 p-2 rounded w-1/2 text-center'
                         />
                     ) : (
-                        <p className='w-1/2 text-base italic opacity-90 text-primary'>{banner.description}</p>
+                        <p className='w-1/2 italic opacity-90 text-primary text-lg'>{banner.description}</p>
                     )}
                 </div>
                 {edit && (

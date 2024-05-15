@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import ProductCard from './ProductCard';
 import productsAPI from '@/API/products.api';
 import ProductInfos from './ProductInfos';
-import {Christmasloader } from './utilities/Loaders';
+import {Christmasloader, BasicLoader } from './utilities/Loaders';
 import { Context } from '@/context/context';
 
 
@@ -73,7 +73,9 @@ const Novelty = () => {
     return (
         <div className='w-[70%] mx-auto '>
             
-            {loading? (<Christmasloader />) : (
+            {loading? (<div className='flex justify-center items-center'>
+                <BasicLoader />
+            </div>) : (
                 <div className='mt-10 flex flex-col gap-10'>
                     
             {/* FEMMES  */}
@@ -122,7 +124,7 @@ const ProductList = ({products, infosProduct, list}) => {
 
                 </div>
 
-                <div className='flex flex-wrap items-center gap-6 justify-center '>
+                <div className='flex flex-wrap items-center gap-6 justify-center mt-10'>
                     {/* Card */}
                     {products?.filter(p => p.category == list).length == 0 && <div className='text-center text-2xl font-semibold'>Aucun produit</div>}
                     {products?.filter(p => p.category == list).slice(0, number).map((product, index) => (
