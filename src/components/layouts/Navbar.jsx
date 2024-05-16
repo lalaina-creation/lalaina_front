@@ -1,16 +1,17 @@
 'use client'
 import Image from 'next/image';
 import React, { useContext, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { FaBars, FaFacebook, FaInstagram, FaSearch, FaWindowClose } from 'react-icons/fa';
-import { MdAccountCircle } from "react-icons/md";
 import Logo from '../../assets/images/logo.png';
 import { Context } from '../../context/context';
+import { useRouter } from 'next/navigation';
+
+import { FaBars, FaFacebook, FaInstagram, FaSearch, FaWindowClose } from 'react-icons/fa';
+import { MdAccountCircle, MdOutlineLogout } from "react-icons/md";
 import { FaShirt } from "react-icons/fa6";
 
 const Navbar = () => {
 
-  const { search, setSearch} = useContext(Context);
+  const { search, setSearch, isAuth, setIsAuth} = useContext(Context);
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -19,8 +20,13 @@ const Navbar = () => {
   };
 
   const login = () => {
-    console.log('login');
+    router.push('/sign-in')
   };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setIsAuth(false);
+  }
 
   return (
     <nav className="fixed top-0 left-0 z-50 flex justify-evenly items-center bg-gray-200 w-full p-5">
@@ -58,14 +64,11 @@ const Navbar = () => {
           Accessoires
         </span>
         </a>
-        <div className="ml-14 flex gap-8 items-center">
-          {/* <FaInstagram className="text-2xl text-primary cursor-pointer" />
-          <FaFacebook className="text-2xl text-primary cursor-pointer" /> */}
-          <MdAccountCircle onClick={login} size={32} className="text-primary  cursor-pointer" />
-          <div className='relative items-center'>
-            <FaShirt size={30} className='text-primary cursor-pointer' onClick={() => router.push('products/new')} />
-            <div className='absolute -top-2 left-3 text-xl'>+</div>
-          </div>
+        <div className="ml-14 flex gap-2 items-center">
+
+          <MdAccountCircle onClick={login} size={32} className="text-primary cursor-pointer" />
+          {isAuth && <MdOutlineLogout size={30} className='text-primary cursor-pointer' onClick={logout} />}
+          {isAuth && <FaShirt size={30} className='text-primary cursor-pointer ml-6' onClick={() => router.push('products/new')} />}
         </div>
       </div>
       {menuOpen && (
@@ -74,7 +77,11 @@ const Navbar = () => {
           <div className='text-center w-full flex flex-col justify-center'>
             <div className="text-lg font-semibold mb-2 flex flex-col justify-center items-center">
               <Image src={Logo} alt="Logo" width={100} height={100} />
-              <MdAccountCircle onClick={login} size={34} className="text-primary mt-4 ml-4 cursor-pointer" />
+              <div className='flex items-center justify-center gap-3 ml-3 mt-2'>
+                <MdAccountCircle onClick={login} size={34} className="text-primary cursor-pointer" />
+                {isAuth && <MdOutlineLogout size={30} className='text-primary cursor-pointer' onClick={logout} />}
+                {isAuth && <FaShirt size={30} className='text-primary cursor-pointer' onClick={() => router.push('products/new')} />}
+              </div>
               
             </div>
             <div className='border border-black border-b-0 w-3/4 mx-auto my-6'/>

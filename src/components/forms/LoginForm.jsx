@@ -1,18 +1,21 @@
+"use client";
 import React, { useContext, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-
+import userAPI from '@/API/user.api';
+import { Context } from '@/context/context';
 const LoginComponent = () => {
 
     const router = useRouter()
+    const { setIsAuth } = useContext(Context)
     const [user, setUser] = useState({
-        username: "",
+        email: "",
         password: ""
     })
 
     const [showPassword, setShowPassword] = useState(false)
-    const [error, setError] = useState(false)
+    const [error, setError] = useState("")
     const [loader, setLoader] = useState(false)
 
 
@@ -30,20 +33,29 @@ const LoginComponent = () => {
     }
 
     const handleSubmit = () => {
+        if(!user.email || !user.password) return alert('Remplissez tous les champs')
         setLoader(true)
-        setError(false)
-        // authApi.login(user)
-        // .then(res => {
-        //     setLoader(false)
-        //     localStorage.setItem('token', res.data.user.token)
-        //     logUser()
-        //     router.push('/chat')
-        // })
-        // .catch(err => {
-        //     console.log(err)
-        //     setError(true)
-        //     setLoader(false)
-        // })
+        setError("")
+        console.log(user)
+
+        setTimeout(() => {
+            userAPI.signIn(user.email, user.password)
+            .then(response => {
+                console.log(response)
+                if(response.status === 404 || response.status === 401) setError(response.data)
+                
+                localStorage.setItem('token', response.token)
+                setIsAuth(true)
+                router.push('/')
+                
+                setLoader(false)
+            })
+            .catch(error => {
+                console.log(error)
+                setLoader(false)
+                setError("Erreur serveur")
+            })
+        }, 2000)
         
     }
 
@@ -55,34 +67,39 @@ const LoginComponent = () => {
             <div className='flex flex-col gap-5 mt-10 w-full border border-slate-400 bg-blue rounded-md p-6'>
                 <Image src="/assets/images/logo.png" alt="logo" width={140} height={140} className='mx-auto cursor-pointer' onClick={() => router.push('/')} />
                 <div className='w-full px-8'>
-                    <label htmlFor="username" className='font-semibold'>Username</label>
+                    <label htmlFor="email" className='font-semibold'>Email</label>
                     <input
-                        value={user.username}
-                        name="username" 
+                        value={user.email}
+                        name="email" 
                         type="text" 
                         className='w-full px-3 py-2 border-b border-gray-400 outline-none font-semibold bg-transparent'
                         onChange={handleChange}
                     />
                 </div>
                 <div className='w-full px-8 relative'>
-                    <label htmlFor="password" className='font-semibold'>Password</label>
+                    <label htmlFor="password" className='font-semibold'>Mot de passe</label>
                     <input
                         value={user.password}
                         name="password" 
                         type={showPassword ? 'text' : 'password'} 
-                        className='w-full px-3 py-2 border-b border-gray-400 outline-none font-semibold bg-transparent text-zinc-200'
+                        className='w-full px-3 py-2 border-b border-gray-400 outline-none font-semibold bg-transparent'
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
                     />
-                    <span className='absolute right-8 top-8 cursor-pointer text-white' onClick={() => setShowPassword(!showPassword)}>
+                    <span className='absolute right-8 top-8 cursor-pointer' onClick={() => setShowPassword(!showPassword)}>
                         {showPassword ? <FaEyeSlash size={22}/> : <FaEye size={22} />}
                     </span>
+                </div>
+                <div className='flex justify-center'>
+                    <button onClick={handleSubmit} className='w-1/2 bg-primary text-white py-2 font-semibold rounded-md'>Connexion</button>
                 </div>
             </div>
             
            <div className='flex flex-col justify-center text-center items-center'>
-                {loader && <DefaultLoader/> }
-                {error && <p className='text-red-500 font-semibold'> Email or Password is invalid </p>}
+                {loader && <div>
+                    Loading ...
+                </div> }
+                {error && <p className='text-red-500 font-semibold'> {error} </p>}
            </div>
 
            </div>
