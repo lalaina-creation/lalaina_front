@@ -115,12 +115,12 @@ const ProductList = ({products, infosProduct, list}) => {
             <div>
                 <div className='flex justify-between items-end' id={list}>
                     <h1 className='text-2xl font-semibold'>{list}</h1>
-                    <div className='flex gap-2'>
+                    {products?.filter(p => p.category == list).length > 4 && <div className='flex gap-2'>
                         {number == products?.length ? 
                         (<span className='text-xl p-1 cursor-pointer hover:opacity-70' onClick={handleExpand}>Voir moins</span>) 
                         : 
                         (<span className='text-xl p-1 cursor-pointer hover:opacity-70' onClick={handleExpand}>Voir plus</span>)}
-                    </div>
+                    </div>}
 
                 </div>
 
