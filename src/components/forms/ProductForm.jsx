@@ -222,7 +222,7 @@ const ProductForm = () => {
 
                         {/* NAME  */}
                         <div className='flex flex-col'>
-                            <label htmlFor='title' className='text-left font-semibold'>Type d'article: </label>
+                            <label htmlFor='title' className='text-left font-semibold'>Type d&apos;article: </label>
                             <ListBox list={productsList} handleSelect={handleSelectProduct} />
                         </div>
 
