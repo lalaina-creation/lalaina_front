@@ -6,9 +6,10 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 const ListBox = ({list, handleSelect}) => {
   const [selected, setSelected] = useState(null)
 
-  useEffect(() => {
-    setSelected(list[0])
-    }, [])
+  // useEffect(() => {
+  //   if(list.length === 0) return
+  //   setSelected(list[0])
+  //   }, [list.length])
 
  
     useEffect(() => {
@@ -17,7 +18,7 @@ const ListBox = ({list, handleSelect}) => {
 
   return (
     <div className='cursor-pointer'>
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox value={selected} onChange={setSelected} defaultValue={null}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
             <span className="block truncate">{selected?.title}</span>

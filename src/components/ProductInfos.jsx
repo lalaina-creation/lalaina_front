@@ -51,7 +51,6 @@ const ProductInfos = ({product, handleClose}) => {
         const token = localStorage.getItem('token');
         productsAPI.deleteProduct(token, product.id)
         .then(res => {
-            console.log(res);
             if(res.status === 200) window.location.reload();
         })
         .catch(err => {
@@ -138,8 +137,8 @@ const ProductInfos = ({product, handleClose}) => {
                     </div>
 
                     <div className='flex justify-center gap-6 mt-6 items-center'>
-                        <img src="/assets/icons/ironer.png" alt="ironer" className="w-12 h-12" />
-                        <img src="/assets/icons/hand_wash.png" alt="hand_wash" className="w-12 h-12" />
+                        {product.hand_wash ? ( <img src="/assets/icons/ironer.png" alt="ironer" className="w-12 h-12" />): null}
+                        {product.ironing ? ( <img src="/assets/icons/hand_wash.png" alt="hand_wash" className="w-12 h-12" />): null}
                     </div>
 
                     <div className='mt-6 flex items-center'>

@@ -52,7 +52,9 @@ const ProductForm = () => {
         threads: '',
         size: '',
         color: '',
-        stock_quantity: 1
+        stock_quantity: 1,
+        hand_wash: false,
+        ironing: false
     });
 
     useEffect(() => {
@@ -110,6 +112,7 @@ const ProductForm = () => {
 
     const handleChange = (e) => {
         setProduct({...product, [e.target.name]: e.target.value});
+        console.log(product)
     }
 
       const saveProduct = () => {
@@ -127,11 +130,14 @@ const ProductForm = () => {
         form.append('size', product.size);
         form.append('color', product.color);
         form.append('stock_quantity', product.stock_quantity);
+        form.append('hand_wash', product.hand_wash);
+        form.append('ironing', product.ironing);
         images.forEach((image) => {
             form.append('images', image);
         });
 
         const token = localStorage.getItem('token');
+        console.log(product)
         productsAPI.addProduct(token, form)
         .then(res => {
             console.log('produit ajouté:' , res)
@@ -164,6 +170,8 @@ const ProductForm = () => {
         if(!e?.title) return;
         setProduct({...product, col: e.title});
     }
+
+
 
 
     return (
@@ -279,13 +287,16 @@ const ProductForm = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    {washList.map((wash, index) => (
-                                        <div key={index} className='flex items-center gap-2'>
-                                            <input type='checkbox' name={wash.title} id={wash.title} />
-                                            <label htmlFor={wash.title}>{wash.title}</label>
-                                        </div>
-                                    
-                                    ))}
+
+                                    <div className='flex items-center gap-2'>
+                                        <input type='checkbox' name="hand_wash" id="hand_wash" value={product.hand_wash} onChange={() => setProduct({...product, hand_wash: !product.hand_wash})} />
+                                        <label className='cursor-pointer'> Lavage à la main </label>
+                                    </div>
+                                    <div className='flex items-center gap-2'>
+                                        <input type='checkbox' name="ironing" id="ironing" value={product.ironing} onChange={() => setProduct({...product, ironing: !product.ironing})} />
+                                        <label className='cursor-pointer'> Repassage interdit </label>
+                                    </div>
+
                                 </div>
                             </div>
 
