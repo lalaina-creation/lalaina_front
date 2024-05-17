@@ -45,9 +45,19 @@ const Banner = () => {
         if (edit) {
             // Save the edited values
             setBanner(editValues);
-            bannerAPI.editBanner(editValues)
-                .then(() => console.log('Banner edited'))
-                .catch(err => console.log(err));
+            const token = localStorage.getItem('token');
+            bannerAPI.editBanner(token, editValues)
+                .then((res) => {
+                    console.log(res)
+                    if (res.status != 200) {
+                        console.log(res.data)
+                        fetchBanner();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    fetchBanner();
+                });
         }
         setEdit(!edit);
     };
@@ -67,7 +77,8 @@ const Banner = () => {
             formData.append('file', file);
 
             try {
-                const res = await bannerAPI.uploadImage(formData); // This endpoint should return the URL of the uploaded image
+                const token = localStorage.getItem('token');
+                const res = await bannerAPI.uploadImage(token, formData); // This endpoint should return the URL of the uploaded image
                 if(!res.url) return;
                 setEditValues(prevValues => ({
                     ...prevValues,

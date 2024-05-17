@@ -37,13 +37,13 @@ const Navbar = () => {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="rounded-md px-2 py-1 border border-primary w-72"
+            className="rounded-md px-2 py-1 border border-primary w-72 sm:w-72 md:w-52 lg:w-52 xl:w-72 2xl:w-96"
             type="text"
             placeholder="Rechercher"
           />
         </div>
       </div>
-      <div className="hidden lg:flex gap-5 text-lg font-semibold -ml-32">
+      <div className="hidden lg:flex gap-5 text-lg font-semibold ml-0 md:ml-0 lg:-ml-8 xl:-ml-32 2xl:-ml-32">
         <a href="#Femmes">
         <span className="hover:border-b-primary border cursor-pointer">
           Femmes

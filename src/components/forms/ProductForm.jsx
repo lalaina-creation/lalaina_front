@@ -127,29 +127,15 @@ const ProductForm = () => {
         form.append('size', product.size);
         form.append('color', product.color);
         form.append('stock_quantity', product.stock_quantity);
-        images.forEach((image, index) => {
+        images.forEach((image) => {
             form.append('images', image);
         });
 
-        
-        productsAPI.addProduct(form)
+        const token = localStorage.getItem('token');
+        productsAPI.addProduct(token, form)
         .then(res => {
             console.log('produit ajouté:' , res)
             if(res.status === 201) {
-                // setProduct({
-                //     title: '',
-                //     description: '',
-                //     price: 0,
-                //     images: [],
-                //     category: '',
-                //     matter: '',
-                //     col: '',
-                //     threads: '',
-                //     size: '',
-                //     color: '',
-                //     stock_quantity: 1
-                // });
-
                 setLoader(false);
                 setMessage({type: 'success', content: 'Produit enregistré avec succès'});
                 window.location.reload();

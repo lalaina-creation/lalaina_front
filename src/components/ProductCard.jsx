@@ -79,7 +79,7 @@ const ProductCard = ({product, infosProduct}) => {
                 </div>
                 )}
                 {ishovered && <div className='absolute bottom-2 flex justify-center w-full h-[100px]'>
-                    <div className='bg-white w-full mx-4 border border-black justify-center text-center relative'>
+                    <div className='bg-white w-full mx-4 border border-black justify-center text-center relative rounded-sm'>
                         <div className='flex gap-3 justify-center items-center mx-3 h-full'>
                             {sizeList.map((size, index) => (
                                 <div key={index} className={`${size == product.size? 'text-primary font-bold': 'text-gray-500 opacity-60'}`}>
