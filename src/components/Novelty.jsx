@@ -31,7 +31,6 @@ const Novelty = () => {
         setLoading(true);
         try {
             const res = await productsAPI.getProducts();
-            console.log('res', res)
             setProducts(res);
             setFilteredProducts(res);
             // groupProductsFunction(products);
@@ -62,7 +61,7 @@ const Novelty = () => {
     //search
     useEffect(() => {
         if (search != "" && search != null) {
-            setFilteredProducts(products.filter(p => p.title.toLowerCase().includes(search.toLowerCase())));
+            setFilteredProducts(products?.filter(p => p.title.toLowerCase().includes(search.toLowerCase())));
         } else {
             setFilteredProducts(products);
         }
@@ -106,7 +105,7 @@ const ProductList = ({products, infosProduct, list}) => {
     , [products])
 
     const handleExpand = () => {
-        if(number == products.length) setNumber(4);
+        if(number == products?.length) setNumber(4);
         else setNumber(products.length);
     }
 
@@ -127,7 +126,7 @@ const ProductList = ({products, infosProduct, list}) => {
                 <div className='flex flex-wrap items-center gap-6 justify-center mt-10'>
                     {/* Card */}
                     {products?.filter(p => p.category == list).length == 0 && <div className='text-center text-2xl font-semibold'>Aucun produit</div>}
-                    {products?.filter(p => p.category == list).slice(0, number).map((product, index) => (
+                    {products?.filter(p => p.category == list).slice(0, number).map((product) => (
                         <ProductCard key={product.id} product={product} infosProduct={infosProduct}  />
                     ))}
                 </div>
