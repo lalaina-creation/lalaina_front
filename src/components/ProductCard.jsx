@@ -57,7 +57,7 @@ const ProductCard = ({product, infosProduct}) => {
             style={{ userSelect: 'none' }}
             >
                 <img 
-                    src={product?.images[showingImage]? `${process.env.API_URL}/${product.images[showingImage]}` : 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg'}
+                    src={product?.images[showingImage]? `${process.env.API_URL}/${product.images[showingImage]}` : ''}
                     alt='product' 
                     className='w-full object-cover h-[320px] mx-auto rounded-t-md'
                     onClick={seeProduct}

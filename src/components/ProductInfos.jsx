@@ -73,7 +73,7 @@ const ProductInfos = ({product, handleClose}) => {
                 <div className='relative h-[80%] flex w-full justify-center items-center flex-col'>
                     <div className='relative w-full h-full mx-auto' style={{ userSelect: 'none' }}>
                         <img 
-                            src={product?.images[showingImage]? `${process.env.API_URL}/${product.images[showingImage]}` : 'https://www.mahogany-cachemire.fr/img/articles/zoom/Cachemire-pull-homme-col-v-hippolyte-4f-vert-anglais-m--3612270080940.jpg'}
+                            src={product?.images[showingImage]? `${process.env.API_URL}/${product.images[showingImage]}` : ''}
                             alt='product' 
                             className='w-full object-contain h-full mx-auto mt-4'
                         />

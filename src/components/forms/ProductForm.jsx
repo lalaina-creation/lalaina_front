@@ -136,9 +136,16 @@ const ProductForm = ({ productOnEdit, setOnEdit }) => {
         form.append('stock_quantity', product.stock_quantity);
         form.append('hand_wash', product.hand_wash);
         form.append('ironing', product.ironing);
-        images.forEach((image) => {
-            form.append('images', image);
-        });
+        
+        if(productOnEdit && images[0] === productOnEdit.images[0]) {
+            console.log('no image', images)
+        }
+        else {
+            console.log('image')
+            images.forEach((image) => {
+                form.append('images', image);
+            });
+        }
 
         const token = localStorage.getItem('token');
         if (productOnEdit) {
@@ -224,7 +231,7 @@ const ProductForm = ({ productOnEdit, setOnEdit }) => {
                         <img src='https://st3.depositphotos.com/23594922/31822/v/1600/depositphotos_318221368-stock-illustration-missing-picture-page-for-website.jpg' 
                             alt='product' 
                             className='w-full h-full rounded-md border object-contain cursor-pointer' 
-                             /> 
+                            /> 
                         )}
                         
                         <div className='flex justify-center mt-4'>
