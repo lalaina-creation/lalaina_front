@@ -3,13 +3,13 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
 
-const ListBox = ({list, handleSelect}) => {
+const ListBox = ({list, handleSelect, defaultValue }) => {
   const [selected, setSelected] = useState(null)
 
-  // useEffect(() => {
-  //   if(list.length === 0) return
-  //   setSelected(list[0])
-  //   }, [list.length])
+  useEffect(() => {
+    if(!defaultValue) return
+    setSelected(defaultValue)
+    }, [])
 
  
     useEffect(() => {
@@ -21,7 +21,7 @@ const ListBox = ({list, handleSelect}) => {
       <Listbox value={selected} onChange={setSelected} defaultValue={null}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-            <span className="block truncate">{selected?.title}</span>
+            <span className="block truncate">{selected ? selected.title : 'Select...'}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon
                 className="h-5 w-5 text-gray-400"

@@ -24,6 +24,18 @@ const productsAPI = {
           .catch(error => error.reponse);
       },
 
+    updateProduct: function(token, id, product) {
+        const config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'auth-token': token
+          },
+      };
+        return axios.put(API_URL + '/updateProduct/' + id, product, config)
+          .then(response =>  response)
+          .catch(error => error.reponse);
+    },
+
     deleteProduct: function(token, id) {
         const config = {
           headers: {

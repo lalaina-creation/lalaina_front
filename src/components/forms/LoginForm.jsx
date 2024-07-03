@@ -26,7 +26,6 @@ const LoginComponent = () => {
         })
     }
     const handleKeyDown = (e) => {
-        console.log(e.key)
         if(e.key === 'Enter') {
             handleSubmit()
         }
@@ -36,13 +35,16 @@ const LoginComponent = () => {
         if(!user.email || !user.password) return alert('Remplissez tous les champs')
         setLoader(true)
         setError("")
-        console.log(user)
 
         setTimeout(() => {
             userAPI.signIn(user.email, user.password)
             .then(response => {
                 console.log(response)
-                if(response.status === 404 || response.status === 401) setError(response.data)
+                if(response.status === 404 || response.status === 401) {
+                    setError(response.data)
+                    setLoader(false)
+                    return
+                }
                 
                 localStorage.setItem('token', response.token)
                 setIsAuth(true)

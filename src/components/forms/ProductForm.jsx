@@ -7,9 +7,10 @@ import mattersListAPI from '@/API/mattersList.api';
 import productsListAPI from '@/API/productsList.api';
 
 import ListBox from '@/components/utilities/ListBox';
+import { AiOutlineClose } from 'react-icons/ai';
 
 
-const ProductForm = () => {
+const ProductForm = ({ productOnEdit, setOnEdit }) => {
     
     const categoriesList = [
         {id: 1, title: 'Hommes'},
@@ -19,18 +20,6 @@ const ProductForm = () => {
     ];
     const sizeList = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'TU'];
     const threadsList = ['2 fils', '3 fils', '4 fils', '12 fils']
-    const washList = [
-        {
-            title: "Lavage à la main",
-            icon: ""
-        },
-        {
-            title: "Repassage interdit",
-            icon: ""
-        }
-
-    ]
-
 
     const [images, setImages] = useState([]);
 
@@ -62,6 +51,20 @@ const ProductForm = () => {
         fetchMattersList();
         fetchProductsList();
     }, []);
+
+    useEffect(() => {
+        if(productOnEdit) {
+            setProduct(prev => ({
+                ...prev,
+                ...productOnEdit,
+                threads: productOnEdit.threads || '',
+                size: productOnEdit.size || '',
+                hand_wash: productOnEdit.hand_wash === 1,
+                ironing: productOnEdit.ironing === 1
+            }));
+            setImages(productOnEdit.images);
+        }
+    }, [productOnEdit]);
 
 
     const fetchColsList = () => {
@@ -111,6 +114,7 @@ const ProductForm = () => {
 
 
     const handleChange = (e) => {
+        console.log(e.target.name, e.target.value)
         setProduct({...product, [e.target.name]: e.target.value});
         console.log(product)
     }
@@ -137,21 +141,38 @@ const ProductForm = () => {
         });
 
         const token = localStorage.getItem('token');
-        console.log(product)
-        productsAPI.addProduct(token, form)
-        .then(res => {
-            console.log('produit ajouté:' , res)
-            if(res.status === 201) {
+        if (productOnEdit) {
+            productsAPI.updateProduct(token, productOnEdit.id, form)
+                .then(res => {
+                    console.log('produit modifié:', res)
+                    if(res.status === 200) {
+                        setLoader(false);
+                        setMessage({type: 'success', content: 'Produit modifié avec succès'});
+                        window.location.reload();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    setLoader(false);
+                    setMessage({type: 'error', content: 'Erreur lors de la modification'});
+                })
+        }
+        else {
+            productsAPI.addProduct(token, form)
+            .then(res => {
+                console.log('produit ajouté:' , res)
+                if(res.status === 201) {
+                    setLoader(false);
+                    setMessage({type: 'success', content: 'Produit enregistré avec succès'});
+                    window.location.reload();
+                }
+            })
+            .catch(err => {
+                console.log(err);
                 setLoader(false);
-                setMessage({type: 'success', content: 'Produit enregistré avec succès'});
-                window.location.reload();
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            setLoader(false);
-            setMessage({type: 'error', content: 'Erreur lors de l\'enregistrement'});
-        })
+                setMessage({type: 'error', content: 'Erreur lors de l\'enregistrement'});
+            })
+        }
     }
 
     const handleSelectProduct = (e) => {
@@ -175,19 +196,28 @@ const ProductForm = () => {
 
 
     return (
-        <div className='inset-0 fixed top-0 left-0 flex justify-center items-center lg:w-2/3 w-5/6 mx-auto '>
-            <div className='bg-primary rounded-md p-6 shadow-lg max-h-screen h-[94%] overflow-auto'>
+        <div className='w-full h-full relative'>
+            {productOnEdit && <AiOutlineClose size={30} className='absolute top-5 right-5 cursor-pointer' onClick={() => setOnEdit(false)} />}
+            <div className='bg-primary rounded-md p-6 shadow-lg max-h-screen h-full overflow-auto'>
                 <h1 className='font-bold text-2xl text-center text-white underline'>Ajouter un article</h1>
                 <div className='mt-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4'>
                         {/* IMAGE  */}
                     <div className='flex justify-center flex-col'>
                         {images.length > 0? (
                             <div className={`w-full h-full rounded-md border grid ${images.length!=1? 'grid-cols-2': ' grid-cols-1'}`}>
-                                {images.map((image, index) => (
-                                    <img key={index} src={URL.createObjectURL(image)} alt='product' 
-                                    className={`rounded-md border object-contain cursor-pointer w-full h-full`} 
-                                     />
-                                ))}
+                                {images.map((image, index) => {
+                                // Determine the source of the image
+                                const src = image instanceof File ? URL.createObjectURL(image) : `${process.env.API_URL}/${image}`;
+
+                                return (
+                                    <img
+                                        key={index}
+                                        src={src}
+                                        alt='product'
+                                        className="rounded-md border object-contain cursor-pointer w-full h-full"
+                                    />
+                                );
+                            })}
                             </div>
                         ):
                         (
@@ -217,38 +247,45 @@ const ProductForm = () => {
                         {/* Categorie  */}
                         <div className='flex flex-col'>
                             <label htmlFor='category' className='text-left font-semibold'>Categorie: </label>
-                            <ListBox list={categoriesList} handleSelect={handleSelectCategory} />
+                            <ListBox list={categoriesList} handleSelect={handleSelectCategory} defaultValue={productOnEdit ? { id: productOnEdit.category, title: productOnEdit.category } : null} />
                         </div>
 
                         {/* NAME  */}
                         <div className='flex flex-col'>
                             <label htmlFor='title' className='text-left font-semibold'>Type d&apos;article: </label>
-                            <ListBox list={productsList} handleSelect={handleSelectProduct} />
+                            <ListBox list={productsList} handleSelect={handleSelectProduct} defaultValue={productOnEdit ? { id: productOnEdit.title, title: productOnEdit.title } : null} />
                         </div>
 
                         {/* MATIERE  */}
                         <div className='flex flex-col'>
                             <label htmlFor='matter' className='text-left font-semibold'>Matière: </label>
-                            <ListBox list={mattersList} handleSelect={handleSelectMatter} />
+                            <ListBox list={mattersList} handleSelect={handleSelectMatter} defaultValue={productOnEdit ? { id: productOnEdit.matter, title: productOnEdit.matter } : null} />
                         </div>
 
                         {/* COL  */}
                         <div className='flex flex-col'>
                             <label htmlFor='col' className='text-left font-semibold'>Col: </label>
-                            <ListBox list={colsList} handleSelect={handleSelectCol} />
+                            <ListBox list={colsList} handleSelect={handleSelectCol} defaultValue={productOnEdit ? { id: productOnEdit.col, title: productOnEdit.col } : null} />
                         </div>
 
                         {/* Fils  */}
                         <div className='flex flex-col'>
                             <label htmlFor='threads' className='text-left font-semibold'>Fils: </label>
                             <div className='flex flex-wrap'>
-                                {threadsList.map((thread, index) => ( 
-                                    <div key={index} className='flex items-center gap-1 mx-2'>
-                                        <input type='radio' name='threads' id={thread} value={thread} onChange={handleChange} />
-                                        <label className='border-b border-secondary cursor-pointer' htmlFor={thread}>{thread}</label>
-                                    </div>
-                                ))}
-                             </div>
+                            {threadsList.map((thread, index) => (
+                                <div key={index} className='flex items-center gap-1 mx-2'>
+                                    <input
+                                        type='radio'
+                                        name='threads'
+                                        id={thread}
+                                        value={thread}
+                                        checked={product.threads === thread}
+                                        onChange={handleChange}
+                                    />
+                                    <label className='border-b border-secondary cursor-pointer' htmlFor={thread}>{thread}</label>
+                                </div>
+                            ))}
+                            </div>
                         </div>
 
                         {/* Taille  */}
@@ -257,7 +294,14 @@ const ProductForm = () => {
                             <div className='flex flex-wrap'>
                                 {sizeList.map((size, index) => ( 
                                     <div key={index} className='flex items-center gap-1 mx-2'>
-                                        <input type='radio' name='size' id={size} value={size} onChange={handleChange} />
+                                        <input 
+                                            type='radio' 
+                                            name='size' 
+                                            id={size} 
+                                            value={size}
+                                            checked={product.size === size}
+                                            onChange={handleChange} 
+                                        />
                                         <label className='border-b border-secondary cursor-pointer' htmlFor={size}>{size}</label>
                                     </div>
                                 ))}
@@ -289,11 +333,25 @@ const ProductForm = () => {
                                 <div>
 
                                     <div className='flex items-center gap-2'>
-                                        <input type='checkbox' name="hand_wash" id="hand_wash" value={product.hand_wash} onChange={() => setProduct({...product, hand_wash: !product.hand_wash})} />
+                                        <input 
+                                            type='checkbox' 
+                                            name="hand_wash" 
+                                            id="hand_wash"
+                                            checked={product.hand_wash}
+                                            value={product.hand_wash} 
+                                            onChange={() => setProduct({...product, hand_wash: !product.hand_wash})} 
+                                        />
                                         <label className='cursor-pointer'> Lavage à la main </label>
                                     </div>
                                     <div className='flex items-center gap-2'>
-                                        <input type='checkbox' name="ironing" id="ironing" value={product.ironing} onChange={() => setProduct({...product, ironing: !product.ironing})} />
+                                        <input 
+                                            type='checkbox' 
+                                            name="ironing" 
+                                            id="ironing" 
+                                            value={product.ironing} 
+                                            checked={product.ironing}
+                                            onChange={() => setProduct({...product, ironing: !product.ironing})} 
+                                        />
                                         <label className='cursor-pointer'> Repassage interdit </label>
                                     </div>
 

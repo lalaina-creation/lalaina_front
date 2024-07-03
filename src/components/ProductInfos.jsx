@@ -5,6 +5,7 @@ import productsAPI from '@/API/products.api';
 import { AiOutlineClose } from 'react-icons/ai';
 import { FaChevronLeft, FaChevronRight, FaStar } from 'react-icons/fa';
 import { HiTrash } from "react-icons/hi2";
+import ProductForm from './forms/ProductForm';
 
 const ProductInfos = ({product, handleClose}) => {
 
@@ -15,6 +16,7 @@ const ProductInfos = ({product, handleClose}) => {
     const [ishovered, setIshovered] = useState(false);
     const [showColors, setShowColors] = useState(false);
     const [deleteDialog, setDeleteDialog] = useState(false);
+    const [onEdit, setOnEdit] = useState(false);
 
     const [showingImage, setShowingImage] = useState(0);
 
@@ -56,6 +58,10 @@ const ProductInfos = ({product, handleClose}) => {
         .catch(err => {
             console.log(err);
         })
+    }
+
+    const editProduct = () => {
+        setOnEdit(true);
     }
 
     return (
@@ -126,7 +132,7 @@ const ProductInfos = ({product, handleClose}) => {
                             <div className='bg-white w-full mx-4 border border-black justify-center text-center relative rounded-md'>
                                 <div className='flex gap-3 justify-center items-center px-3 h-full w-full'>
                                     {sizeList.map((size, index) => (
-                                        <div key={index} className={`${index <=4? 'text-primary font-bold': 'text-gray-500 opacity-60'}`}>
+                                        <div key={index} className={`${size == product.size? 'text-primary font-bold': 'text-gray-500 opacity-60'}`}>
                                             {size}
                                         </div>
                                     ))}
@@ -137,14 +143,19 @@ const ProductInfos = ({product, handleClose}) => {
                     </div>
 
                     <div className='flex justify-center gap-6 mt-6 items-center'>
-                        {product.hand_wash ? ( <img src="/assets/icons/ironer.png" alt="ironer" className="w-12 h-12" />): null}
-                        {product.ironing ? ( <img src="/assets/icons/hand_wash.png" alt="hand_wash" className="w-12 h-12" />): null}
+                        {product.hand_wash ? ( <img src="/assets/icons/hand_wash.png" alt="ironer" className="w-12 h-12" />): null}
+                        {product.ironing ? ( <img src="/assets/icons/ironer.png" alt="hand_wash" className="w-12 h-12" />): null}
                     </div>
 
                     <div className='mt-6 flex items-center'>
                         Ajouter aux favoris
                         <FaStar size={30} className='ml-2' />
                     </div>
+
+                    {isAuth && 
+                    <button className='mt-6 flex items-center border border-black px-2 py-1 rounded-md hover:border-primary hover:text-primary' onClick={editProduct}>
+                        Modifier
+                    </button>}
             </div>
                 {isAuth && <div className='absolute bottom-4 right-4'>
                     <HiTrash size={30} className='cursor-pointer text-red-600' onClick={() => setDeleteDialog(true)} />
@@ -157,6 +168,10 @@ const ProductInfos = ({product, handleClose}) => {
                             <span className='cursor-pointer font-semibold text-red-600' onClick={() => setDeleteDialog(false)} >Annuler</span>
                         </div>
                     </div>
+                </div>}
+                {onEdit &&
+                <div className='absolute top-0 left-0 w-full h-full'>
+                    <ProductForm productOnEdit={product} setOnEdit={setOnEdit} />
                 </div>}
             </div>
         </div>
