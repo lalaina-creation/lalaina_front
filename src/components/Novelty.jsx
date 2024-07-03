@@ -112,7 +112,7 @@ const ProductList = ({products, infosProduct, list}) => {
     return (
         <>
             <div>
-                {products?.lengtgth > 0? (
+                {products?.length > 0? (
                 <div>
                     <div className='flex justify-between items-end' id={list}>
                         <h1 className='text-2xl font-semibold'>{list}</h1>
