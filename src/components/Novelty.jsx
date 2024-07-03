@@ -112,24 +112,32 @@ const ProductList = ({products, infosProduct, list}) => {
     return (
         <>
             <div>
-                <div className='flex justify-between items-end' id={list}>
-                    <h1 className='text-2xl font-semibold'>{list}</h1>
-                    {products?.filter(p => p.category == list).length > 4 && <div className='flex gap-2'>
-                        {number == products?.length ? 
-                        (<span className='text-xl p-1 cursor-pointer hover:opacity-70' onClick={handleExpand}>Voir moins</span>) 
-                        : 
-                        (<span className='text-xl p-1 cursor-pointer hover:opacity-70' onClick={handleExpand}>Voir plus</span>)}
-                    </div>}
+                {products?.lengtgth > 0? (
+                <div>
+                    <div className='flex justify-between items-end' id={list}>
+                        <h1 className='text-2xl font-semibold'>{list}</h1>
+                        {products?.filter(p => p.category == list).length > 4 && <div className='flex gap-2'>
+                            {number == products?.length ? 
+                            (<span className='text-xl p-1 cursor-pointer hover:opacity-70' onClick={handleExpand}>Voir moins</span>) 
+                            : 
+                            (<span className='text-xl p-1 cursor-pointer hover:opacity-70' onClick={handleExpand}>Voir plus</span>)}
+                        </div>}
 
-                </div>
+                    </div>
 
-                <div className='flex flex-wrap items-center gap-6 justify-center mt-10'>
-                    {/* Card */}
-                    {products?.filter(p => p.category == list).length == 0 && <div className='text-center text-2xl font-semibold'>Aucun produit</div>}
-                    {products?.filter(p => p.category == list).slice(0, number).map((product) => (
-                        <ProductCard key={product.id} product={product} infosProduct={infosProduct}  />
-                    ))}
+                    <div className='flex flex-wrap items-center gap-6 justify-center mt-10'>
+                        {/* Card */}
+                        {products?.filter(p => p.category == list).length == 0 && <div className='text-center text-2xl font-semibold'>Aucun produit</div>}
+                        {products?.filter(p => p.category == list).slice(0, number).map((product) => (
+                            <ProductCard key={product.id} product={product} infosProduct={infosProduct}  />
+                        ))}
+                    </div>
                 </div>
+                ) : (
+                    <div className='flex justify-center items-center'>
+                        Aucun Produits
+                    </div>
+                )}
             </div>
             <div className='border-b border-primary' />
         </>
